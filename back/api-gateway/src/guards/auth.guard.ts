@@ -6,7 +6,6 @@ import { Injectable,
 import { firstValueFrom } from "rxjs";
 import { Inject } from "@nestjs/common";
 import { ClientProxy } from "@nestjs/microservices";
-import { privateDecrypt } from "crypto";
 
 @Injectable()
 export class AuthGuard implements CanActivate {

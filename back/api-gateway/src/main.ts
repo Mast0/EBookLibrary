@@ -3,6 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { Transport } from '@nestjs/microservices';
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const pack = require('./../package.json');
 
 async function bootstrap() {

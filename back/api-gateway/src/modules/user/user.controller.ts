@@ -16,10 +16,4 @@ export class UserController {
     this.logger.log('Creating user');
     return this.userService.createUser(user);
   }
-
-  // @UseGuards(AuthGuard)
-  // @Get('profile')
-  // getProfile(@Request() req) {
-  //   return req.user;
-  // }
 }

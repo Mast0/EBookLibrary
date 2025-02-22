@@ -8,4 +8,9 @@ export const patterns = {
     FIND_BY_EMAIL: { cmd: 'find_user_by_email' },
     RESET_PASSWORD: { cmd: 'reset_password' },
   },
+  AUTH: {
+    TOKENS: { cmd: 'auth.tokens' },
+    VERIFY: { cmd: 'auth.verify' },
+    REFRESH: { cmd: 'auth.refresh' }
+  }
 };

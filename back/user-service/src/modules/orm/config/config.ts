@@ -1,5 +1,6 @@
 import { DataSource } from "typeorm";
 import { PostgresConnectionOptions } from "typeorm/driver/postgres/PostgresConnectionOptions";
+import "dotenv/config"
 
 const dbName = process.env.DB_NAME || 'users';
 

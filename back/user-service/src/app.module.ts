@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { ModulesModule } from './modules/modules.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import "dotenv/config"
 
 @Module({
   imports: [

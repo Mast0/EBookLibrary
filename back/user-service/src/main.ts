@@ -2,7 +2,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { Transport } from '@nestjs/microservices';
-import { configService } from './modules/config/config.service';
+import { configService } from './config';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const pack = require('./../package.json');

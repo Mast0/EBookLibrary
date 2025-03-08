@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { ModulesModule } from './modules/modules.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import "dotenv/config"
+import appDataSource from './modules/orm/config/config';
 
 @Module({
   imports: [
@@ -14,16 +15,7 @@ import "dotenv/config"
       envFilePath: '.env',
     }),
     ModulesModule,
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: process.env.DB_HOST,
-      port: parseInt(process.env.DB_PORT!),
-      username: process.env.DB_USERNAME,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_NAME,
-      entities: [__dirname + '/**/*.entity.{js,ts}'],
-      synchronize: true,
-    }),
+    TypeOrmModule.forRoot(appDataSource.options),
   ],
   controllers: [AppController],
   providers: [AppService],

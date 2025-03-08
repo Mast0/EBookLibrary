@@ -15,7 +15,7 @@ export class AuthService {
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.sign(payload, {
         secret: this.configService.get<string>('JWT_ACCESS_SECRET'),
-        expiresIn: this.configService.get<string>('JWT_ACCESS_EXPIRATION') || '15m',
+        expiresIn: this.configService.get<string>('JWT_ACCESS_EXPIRATION') || '1d',
       }),
       this.jwtService.sign(payload, {
         secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
@@ -53,7 +53,7 @@ export class AuthService {
     const decoded = await this.verifyAccessToken(refreshToken);
     const tokens = await this.generateToken({
       member_id: decoded.member_id,
-      role: decoded.role,
+      role_id: decoded.role_id,
     });
 
     return tokens;

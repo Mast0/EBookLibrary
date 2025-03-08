@@ -1,5 +1,3 @@
-import { UserRole } from "src/enum/role.enum";
-
 export interface Tokens {
   accessToken: string;
   refreshToken: string;
@@ -7,5 +5,5 @@ export interface Tokens {
 
 export interface TokenPayload {
   member_id: string;
-  role: UserRole;
+  role_id: string;
 }

@@ -8,6 +8,7 @@ import { typeOrmModuleOptions } from "./config/config";
       ...typeOrmModuleOptions,
       migrations: [__dirname + '/../migrations/*{js,ts}'],
       entities: [__dirname + '/../entities/*.entity.{js,ts}'],
+      autoLoadEntities: true,
     }),
   ],
 })

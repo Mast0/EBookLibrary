@@ -29,7 +29,6 @@ export class UserService {
       throw new RpcException(`Role ${role} not found`);
     }
 
-    // Remove role from userData and only use role_id
     const userData = {
       email,
       username,

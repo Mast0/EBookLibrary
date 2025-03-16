@@ -1,15 +1,16 @@
-/* eslint-disable prettier/prettier */
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { Transport } from '@nestjs/microservices';
+import { UserExeptionFilter } from './modules/exeption_filters/user-exeption.filter';
+import "dotenv/config"
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const pack = require('./../package.json');
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api');
   app.enableCors();
+  app.useGlobalFilters(new UserExeptionFilter())
 
   app.connectMicroservice({
     transport: Transport.RMQ,
@@ -20,6 +21,7 @@ async function bootstrap() {
     },
   });
 
+  app.startAllMicroservices();
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();

@@ -14,11 +14,11 @@ export class AuthService {
   async generateToken(payload: TokenPayload): Promise<Tokens> {
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.sign(payload, {
-        secret: this.configService.get<string>('JWT_ACCESS_SECRET'),
+        secret: this.configService.get<string>('JWT_ACCESS_SECRET') || 'superSecretKey',
         expiresIn: this.configService.get<string>('JWT_ACCESS_EXPIRATION') || '1d',
       }),
       this.jwtService.sign(payload, {
-        secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
+        secret: this.configService.get<string>('JWT_REFRESH_SECRET') || 'superSecretKey',
         expiresIn: this.configService.get<string>('JWT_REFRESH_EXPIRATION') || '7d',
       }),
     ]);

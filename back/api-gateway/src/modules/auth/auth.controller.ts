@@ -8,7 +8,7 @@ export class AuthController {
 
     constructor(private readonly authService: AuthService) { }
 
-    @Post('login')
+    @Post('generate')
     async loginUser(@Body() tokenPayload: TokenPayload) {
         this.logger.log('Generating access token');
         return this.authService.generateToken(tokenPayload);

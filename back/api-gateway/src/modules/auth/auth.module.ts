@@ -2,6 +2,7 @@ import { Module } from "@nestjs/common";
 import { ClientProxyFactory, Transport } from "@nestjs/microservices";
 import { AuthController } from "./auth.controller";
 import { AuthService } from "./auth.service";
+import "dotenv/config"
 
 @Module({
     controllers: [AuthController],
@@ -14,7 +15,7 @@ import { AuthService } from "./auth.service";
                     transport: Transport.RMQ as any,
                     options: {
                         urls: [process.env.BROCKER_URI],
-                        queue: 'auth-service',
+                        queue: 'user-service',
                         queueOptions: { durable: false },
                     },
                 }),

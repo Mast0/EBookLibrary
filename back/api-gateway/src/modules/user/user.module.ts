@@ -2,6 +2,7 @@ import { Module } from "@nestjs/common";
 import { ClientProxyFactory, Transport } from "@nestjs/microservices"
 import { UserController } from "./user.controller";
 import { UserService } from "./user.service";
+import "dotenv/config"
 
 @Module({
   controllers: [UserController],

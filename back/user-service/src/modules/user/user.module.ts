@@ -5,9 +5,13 @@ import { UserService } from './user.service';
 
 import { User } from '../../entity/user.entity';
 import { Role } from '../../entity/role.entity';
+import { AuthService } from '../auth/auth.service';
+import { JwtService } from '@nestjs/jwt';
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Role])],
+  imports: [
+    TypeOrmModule.forFeature([User, Role]),
+  ],
   controllers: [UserController],
-  providers: [UserService],
+  providers: [UserService, AuthService, JwtService],
 })
 export class UserModule {}

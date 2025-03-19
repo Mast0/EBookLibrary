@@ -2,7 +2,7 @@ import { ConflictException, Inject, Injectable, Logger, NotFoundException, Unaut
 import { InjectRepository } from '@nestjs/typeorm';
 import { RpcException } from '@nestjs/microservices';
 import { QueryFailedError, Repository } from 'typeorm';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 
 import { UserDTO } from './dto';
 import { User } from '../../entity/user.entity';
@@ -30,7 +30,7 @@ export class UserService {
 
     const roleEntity = await this.roleRepository.findOneBy({ name: role });
     if (!roleEntity) {
-      throw new RpcException(`Role ${role} not found`);
+      throw new RpcException(new NotFoundException(`Role ${role} not found`));
     }
 
     const userData = {
@@ -87,12 +87,12 @@ export class UserService {
   async updateUser(id: string, dto: UserDTO) {
     const user = await this.findUserById(id);
     if (!user) {
-      throw new RpcException('User not found');
+      throw new RpcException(new NotFoundException('User not found'));
     }
 
     const roleEntity = await this.roleRepository.findOneBy({ name: dto.role });
     if (!roleEntity) {
-      throw new NotFoundException(`Role ${dto.role} not found`);
+      throw new RpcException(new NotFoundException(`Role ${dto.role} not found`));
     }
 
     const { role: _, ...updateData } = dto;
@@ -106,7 +106,7 @@ export class UserService {
   async deleteUser(id: string) {
     const user = await this.findUserById(id);
     if (!user) {
-      throw new RpcException('User not found');
+      throw new RpcException(new NotFoundException('User not found'));
     }
     return await this.userRepository.delete(id);
   }
@@ -118,7 +118,7 @@ export class UserService {
   async resetPassword(email: string) {
     const user = await this.findUserByEmail(email);
     if (!user) {
-      throw new RpcException('User not found');
+      throw new RpcException(new NotFoundException('User not found'));
     }
     return await this.userRepository.save({ ...user, password: '123456' });
   }

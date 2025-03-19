@@ -6,6 +6,7 @@ import { Injectable,
 import { firstValueFrom } from "rxjs";
 import { Inject } from "@nestjs/common";
 import { ClientProxy } from "@nestjs/microservices";
+import { patterns } from "src/modules/patterns";
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -25,7 +26,7 @@ export class AuthGuard implements CanActivate {
 
     try{
       const user = await firstValueFrom(
-        this.userClient.send({ cmd: 'auth.verify' }, { token }),
+        this.userClient.send(patterns.AUTH.VERIFY, { token }),
       );
 
       request.user = user;

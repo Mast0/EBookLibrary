@@ -1,4 +1,4 @@
-import { ConflictException, Inject, Injectable, Logger, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, ConflictException, Inject, Injectable, Logger, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RpcException } from '@nestjs/microservices';
 import { QueryFailedError, Repository } from 'typeorm';
@@ -51,6 +51,7 @@ export class UserService {
       if (error instanceof QueryFailedError) {
         throw new RpcException(new ConflictException('User already exists with this email or username'));
       }
+      throw new RpcException(new BadRequestException('Ops, we have some error while creating user.'));
     }
   }
 
@@ -96,11 +97,17 @@ export class UserService {
     }
 
     const { role: _, ...updateData } = dto;
-    return await this.userRepository.save({
-      ...user,
-      ...updateData,
-      role_id: roleEntity.id,
-    });
+    
+    try{
+      return await this.userRepository.save({
+        ...user,
+        ...updateData,
+        role_id: roleEntity.id,
+      });
+    }
+    catch {
+      throw new RpcException(new BadRequestException('Ops, we have some error while updating user.'))
+    }
   }
 
   async deleteUser(id: string) {

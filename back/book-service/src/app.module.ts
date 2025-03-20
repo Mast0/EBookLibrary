@@ -1,9 +1,10 @@
-/* eslint-disable prettier/prettier */
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { ConfigModule } from '@nestjs/config';
 import { ModulesModule } from './modules/modules.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import appDataSource from './modules/orm/config/config';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { ModulesModule } from './modules/modules.module';
       envFilePath: '.env'
     }),
     ModulesModule,
+    TypeOrmModule.forRoot(appDataSource.options)
   ],
   controllers: [AppController],
   providers: [AppService],

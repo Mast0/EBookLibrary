@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { Transport } from '@nestjs/microservices';
-import { UserExeptionFilter } from './modules/exeption_filters/user-exeption.filter';
+import { UserExeptionFilter } from './exeption_filters/user-exeption.filter';
 import "dotenv/config"
 
 const pack = require('./../package.json');

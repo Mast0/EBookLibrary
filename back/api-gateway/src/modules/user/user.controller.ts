@@ -3,7 +3,7 @@ import { AuthGuard } from "src/guards/auth.guard";
 
 import { UserService } from "./user.service";
 import { User } from "./dto";
-import { UserExeptionFilter } from "../exeption_filters/user-exeption.filter";
+import { UserExeptionFilter } from "../../exeption_filters/user-exeption.filter";
 import { Login } from "./dto/login";
 import { log } from "console";
 
@@ -30,5 +30,5 @@ export class UserController {
   @Get('profile')
   getProfile(@Request() req) {
     return req.user;
-  }
+  } 
 }

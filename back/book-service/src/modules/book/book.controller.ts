@@ -3,7 +3,7 @@ import { BookService } from './book.service';
 import { MessagePattern } from '@nestjs/microservices';
 import { patterns } from '../patterns';
 import { BookDto } from './dto';
-import { strict } from 'assert';
+
 
 @Controller('book')
 export class BookController {

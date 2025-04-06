@@ -26,6 +26,21 @@ services:
       - DB_NAME=${DB_NAME}
     networks:
       - nestjs-network
+  
+  book-service:
+    build: ./book-service
+    container_name: book-service
+    ports:
+      - "3002:3002"
+    environment:
+      - BROCKER_URI=${BROCKER_URI}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+    networks:
+      - nestjs-network
 
   rabbitmq:
     image: rabbitmq:3-management

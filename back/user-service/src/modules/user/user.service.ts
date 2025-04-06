@@ -39,12 +39,12 @@ export class UserService {
       password: userPassword,
     };
 
-    const user = this.userRepository.create({
-      ...userData,
-      role_id: roleEntity.id,
-    });
-
     try{
+      const user = this.userRepository.create({
+        ...userData,
+        role_id: roleEntity.id,
+      });
+
       return await this.userRepository.save(user);
     }
     catch (error){

@@ -22,4 +22,4 @@ import "dotenv/config"
     },
   ],
 })
-export class UserModule {}
+export class BookModule {}

@@ -6,12 +6,6 @@ import { patterns } from "../patterns";
 
 @Injectable()
 export class BookService {
-  getAllBooks() {
-    throw new Error("Method not implemented.");
-  }
-  getBookById(id: string) {
-    throw new Error("Method not implemented.");
-  }
   private readonly logger = new Logger(BookService.name);
 
   constructor(

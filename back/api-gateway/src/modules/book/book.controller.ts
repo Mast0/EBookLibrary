@@ -13,23 +13,23 @@ export class BookController {
 
   constructor(private readonly bookService: BookService) {}
 
-  @Post('adding')
+  @Post()
   // @UseGuards(AuthGuard) 
   async createBook(@Body() book: Book) {
     this.logger.log('Adding a new book');
     return this.bookService.createBook(book);
   }
 
-  @Get('getting')
+  @Get()
   async getAllBooks() {
     this.logger.log('Getting all books');
-    return this.bookService.getAllBooks();
+    return this.bookService.findAllBooks();
   }
 
   @Get(':id')
   async getBookById(@Param('id') id: string) {
     this.logger.log(`Getting book by id: ${id}`);
-    return this.bookService.getBookById(id);
+    return this.bookService.findBookById(id);
   }
 
   @Put(':id')

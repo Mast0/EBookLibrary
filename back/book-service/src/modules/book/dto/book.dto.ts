@@ -4,5 +4,6 @@ export interface BookDto {
     genre: string;
     description: string;
     publication_year: number;
+    pages: number;
     file_url: string;
 }

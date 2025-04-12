@@ -23,7 +23,7 @@ export class ReadingController {
   }
 
   @MessagePattern(patterns.READING.UPDATE)
-  async pdateReading(id: string, dto: ReadingDto){
+  async updateReading(id: string, dto: ReadingDto){
     this.logger.log('Updating reading');
     return await this.readingService.updateReading(id, dto);
   }

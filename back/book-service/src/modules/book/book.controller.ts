@@ -18,7 +18,8 @@ export class BookController {
     }
 
     @MessagePattern(patterns.BOOK.UPDATE)
-    async updateBook(id: string, dto: BookDto) {
+    async updateBook(data: { id: string, dto: BookDto }) {
+        const { id, dto } = data;
         this.logger.log(`Update book with id: ${id}`);
         return await this.bookService.updateBook(id, dto);
     }
@@ -30,7 +31,8 @@ export class BookController {
     }
 
     @MessagePattern(patterns.BOOK.FIND_BY_ID)
-    async getBookById(id: string) {
+    async getBookById(data: { id: string }) {
+        const { id } = data;
         this.logger.log(`Getting book by id: ${id}`);
         return await this.bookService.getBookById(id);
     }

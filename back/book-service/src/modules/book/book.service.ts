@@ -33,9 +33,14 @@ export class BookService {
         const book = await this.getBookById(id);
         if (!book)
             throw new RpcException(new ConflictException('User already exists with this email or username'));
-
         try {
-            return await this.bookRepository.save(dto);
+            book.author = dto.author;
+            book.description = dto.description;
+            book.file_url = dto.file_url;
+            book.genre = dto.genre;
+            book.publication_year = dto.publication_year;
+            book.title = dto.title;
+            return await this.bookRepository.save(book);
         }
         catch {
             throw new RpcException(new BadRequestException('Ops, we have some error while updating user.'))
@@ -47,7 +52,7 @@ export class BookService {
     }
 
     async getBookById(id: string) {
-        const book = await this.bookRepository.findOne({ where: { id } });
+        const book = await this.bookRepository.findOneBy({ id });
         if (!book)
             throw new RpcException(new NotFoundException('Book not found'));
         return book;

@@ -22,5 +22,10 @@ export const patterns = {
     FIND_BY_TITLE: { cmd: 'find_book_by_title' },
     FIND_BY_AUTHOR: { cmd: 'find_book_by_author' },
     RESET_PASSWORD: { cmd: 'reset_password' },
-  }
+  },
+  READING: {
+    CREATE: { cmd: 'create_readings' },
+    FIND_ALL: { cmd: 'find_all_readings' },
+    UPDATE: { cmd: 'update_reading' }
+  },
 };

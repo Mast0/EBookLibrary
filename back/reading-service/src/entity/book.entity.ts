@@ -3,25 +3,28 @@ import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
 @Entity('books')
 export class Book {
     @PrimaryGeneratedColumn('uuid')
-    id: string
+    id: string;
 
     @Column()
-    title: string
+    title: string;
 
     @Column()
-    author: string
+    author: string;
 
     @Column()
-    genre: string
+    genre: string;
 
     @Column()
-    description: string
+    description: string;
 
     @Column()
-    publication_year: number
+    publication_year: number;
 
     @Column()
-    file_url: string
+    pages: number;
+
+    @Column()
+    file_url: string;
 
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     created_at: Date;

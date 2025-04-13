@@ -14,7 +14,7 @@ export class BookController {
   constructor(private readonly bookService: BookService) {}
 
   @Post()
-  // @UseGuards(AuthGuard) 
+  @UseGuards(AuthGuard) 
   async createBook(@Body() book: Book) {
     this.logger.log('Adding a new book');
     return this.bookService.createBook(book);
@@ -33,7 +33,7 @@ export class BookController {
   }
 
   @Put(':id')
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   async updateBook(@Param('id') id: string, @Body() book: Book) {
     this.logger.log(`Updating book with id ${id}`);
     return this.bookService.updateBook(id, book);

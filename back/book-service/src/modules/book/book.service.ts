@@ -23,7 +23,7 @@ export class BookService {
         }
         catch (error) {
             if (error instanceof QueryFailedError) {
-                throw new RpcException(new ConflictException('User already exists with this email or username'));
+                throw new RpcException(new ConflictException('Book already exists'));
             }
             throw new RpcException(new BadRequestException('Ops, we have some error while creating book.'));
         }
@@ -32,7 +32,7 @@ export class BookService {
     async updateBook(id: string, dto: BookDto) {
         const book = await this.getBookById(id);
         if (!book)
-            throw new RpcException(new ConflictException('User already exists with this email or username'));
+            throw new RpcException(new NotFoundException('Book Not Found'));
         try {
             book.author = dto.author;
             book.description = dto.description;
@@ -43,7 +43,7 @@ export class BookService {
             return await this.bookRepository.save(book);
         }
         catch {
-            throw new RpcException(new BadRequestException('Ops, we have some error while updating user.'))
+            throw new RpcException(new BadRequestException('Ops, we have some error while updating Book.'))
         }
     }
 

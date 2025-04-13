@@ -32,7 +32,7 @@ export class AuthService {
   async verifyAccessToken(token: string): Promise<TokenPayload> {
     try {
       return this.jwtService.verify(token, {
-        secret: this.configService.get<string>('JWT_ACCESS_SECRET'),
+        secret: this.configService.get<string>('JWT_ACCESS_SECRET') || 'superSecretKey',
       });
     } catch (err) {
       throw new RpcException(err);
@@ -42,7 +42,7 @@ export class AuthService {
   async verifyRefreshToken(token: string): Promise<TokenPayload> {
     try {
       return this.jwtService.verify(token, {
-        secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
+        secret: this.configService.get<string>('JWT_REFRESH_SECRET') || 'superSecretKey',
       });
     } catch (err) {
       throw new RpcException(err);

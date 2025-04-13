@@ -1,26 +1,25 @@
 import { Module } from "@nestjs/common";
 import { ClientProxyFactory, Transport } from "@nestjs/microservices"
-import { UserController } from "./user.controller";
-import { UserService } from "./user.service";
+import { ReadingController } from "./reading.controller";
+import { ReadingService } from "./reading.service";
 import "dotenv/config"
 
 @Module({
-  controllers: [UserController],
+  controllers: [ReadingController],
   providers: [
-    UserService,
+    ReadingService,
     {
-      provide: 'USER_SERVICE',
+      provide: 'READING_SERVICE',
       useFactory: () =>
         ClientProxyFactory.create({
           transport: Transport.RMQ as any,
           options: {
             urls: [process.env.BROCKER_URI],
-            queue: 'user-service',
+            queue: 'reading-service',
             queueOptions: { durable: false },
           },
         }),
     },
   ],
-  exports: ['USER_SERVICE', UserService],
 })
-export class UserModule {}
+export class ReadingModule {}

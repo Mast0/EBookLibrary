@@ -4,7 +4,8 @@ import {
   PrimaryGeneratedColumn,
   Unique,
   ManyToOne,
-  JoinColumn
+  JoinColumn,
+  OneToOne
 } from "typeorm";
 import { User } from "./user.entity";
 import { Book } from "./book.entity";

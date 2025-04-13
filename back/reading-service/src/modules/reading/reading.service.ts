@@ -5,6 +5,7 @@ import { QueryFailedError, Repository } from 'typeorm';
 import { ReadingDto } from './dto/reading.dto';
 import { Book } from 'src/entity/book.entity';
 import { RpcException } from '@nestjs/microservices';
+import { read } from 'fs';
 
 @Injectable()
 export class ReadingService {
@@ -25,7 +26,9 @@ export class ReadingService {
     if (!book)
       throw new RpcException(new NotFoundException('Book not found'));
 
-    const percentage_read = current_page/book.pages*100;
+    if (current_page > book.pages)
+      throw new RpcException(new BadRequestException('Current page is higher than pages in book'));
+    const percentage_read = Math.round(current_page/book.pages*100);
 
     const readingData = {
       user_id,
@@ -51,7 +54,7 @@ export class ReadingService {
   }
 
   async updateReading(id: string, dto: ReadingDto) {
-    const reading = this.readingRepository.findOne({ where: { id } })
+    const reading = await this.readingRepository.findOne({ where: { id } });
     if (!reading){
       throw new RpcException(new NotFoundException('Reading Not Found'));
     }
@@ -61,17 +64,16 @@ export class ReadingService {
     if (!book)
       throw new RpcException(new NotFoundException('Book not found'));
 
-    const percentage_read = current_page/book.pages*100;
-
-    const readingData = {
-      user_id,
-      book_id, 
-      current_page,
-      percentage_read,
-    };
+    if (current_page > book.pages)
+      throw new RpcException(new BadRequestException('Current page is higher than pages in book'));
+    const percentage_read = Math.round(current_page/book.pages*100);
 
     try{
-      return await this.readingRepository.save(readingData);
+      reading.user_id = user_id;
+      reading.book_id = book_id;
+      reading.current_page = current_page;
+      reading.percentage_read = percentage_read;
+      return await this.readingRepository.save(reading);
     }
     catch {
       throw new RpcException(new BadRequestException('Ops, we have some error while updating reading.'))

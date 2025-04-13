@@ -17,14 +17,14 @@ export class ReadingController {
   }
 
   @MessagePattern(patterns.READING.FIND_ALL)
-  async findReadings(user_id: string) {
+  async findReadings(data: { user_id: string }) {
     this.logger.log('Finding readings');
-    return await this.readingService.getAllReadings(user_id);
+    return await this.readingService.getAllReadings(data.user_id);
   }
 
   @MessagePattern(patterns.READING.UPDATE)
-  async updateReading(id: string, dto: ReadingDto){
+  async updateReading(data: {id: string, dto: ReadingDto}){
     this.logger.log('Updating reading');
-    return await this.readingService.updateReading(id, dto);
+    return await this.readingService.updateReading(data.id, data.dto);
   }
 }

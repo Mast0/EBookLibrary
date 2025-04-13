@@ -3,8 +3,10 @@ import { ClientProxyFactory, Transport } from "@nestjs/microservices"
 import { ReadingController } from "./reading.controller";
 import { ReadingService } from "./reading.service";
 import "dotenv/config"
+import { UserModule } from "../user/user.module";
 
 @Module({
+  imports: [UserModule],
   controllers: [ReadingController],
   providers: [
     ReadingService,

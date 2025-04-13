@@ -4,8 +4,10 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 import { Role } from './role.entity';
+import { Reading } from './reading.entity';
 
 @Entity('users')
 export class User {
@@ -24,6 +26,9 @@ export class User {
   @ManyToOne(() => Role)
   @JoinColumn({ name: 'role_id' })
   role: Role;
+
+  @OneToMany(() => Reading, (reading) => reading.user)
+  readings: Reading[];
 
   @Column()
   role_id: string;

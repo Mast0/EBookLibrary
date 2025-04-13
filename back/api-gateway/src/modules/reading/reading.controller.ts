@@ -13,7 +13,7 @@ export class ReadingController {
   constructor(private readonly readingService: ReadingService) {}
 
   @Post()
-  // @UseGuards(AuthGuard) 
+  @UseGuards(AuthGuard) 
   async createReading(@Body() reading: Reading) {
     this.logger.log('Creating reading');
     return this.readingService.createReading(reading);
@@ -26,7 +26,7 @@ export class ReadingController {
   }
 
   @Put(':id')
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   async udateReading(@Param('id') id: string, @Body() reading: Reading) {
     this.logger.log(`Updating reading ${id}`);
     return this.readingService.updateReading(id, reading);

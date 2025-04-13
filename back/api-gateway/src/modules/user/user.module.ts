@@ -21,5 +21,6 @@ import "dotenv/config"
         }),
     },
   ],
+  exports: ['USER_SERVICE', UserService],
 })
 export class UserModule {}

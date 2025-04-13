@@ -17,9 +17,9 @@ export class AuthController {
   }
 
   @MessagePattern(patterns.AUTH.VERIFY)
-  async verifyToken(dto): Promise<TokenPayload> {
+  async verifyToken(data: {token: string}): Promise<TokenPayload> {
     this.logger.log('Verifying token');
-    return this.authService.verifyAccessToken(dto);
+    return this.authService.verifyAccessToken(data.token);
   }
 
   @MessagePattern(patterns.AUTH.REFRESH)

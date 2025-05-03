@@ -5,6 +5,15 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Debug React App",
+            "type": "chrome",
+            "request": "launch",
+            "url": "http://localhost:3004",
+            "webRoot": "${workspaceFolder}/src",
+            "sourceMaps": true,
+            "trace": true
+        },
+        {
             "name": "Api-Gateway Debug",
             "type": "node",
             "request": "attach",

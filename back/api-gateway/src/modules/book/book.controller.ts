@@ -1,9 +1,12 @@
-import { Controller, Logger, Post, Param, Put, Body, Request, UseGuards, Get, UseFilters } from "@nestjs/common";
+import { Controller, Logger, Post, Param, Put, Body, UseGuards, Get, UseFilters, UploadedFile, UseInterceptors, Req } from "@nestjs/common";
 import { AuthGuard } from "src/guards/auth.guard";
+import { FileInterceptor } from "@nestjs/platform-express";
+import { diskStorage } from "multer";
 
 import { BookService } from "./book.service";
 import { UserExeptionFilter } from "../../exeption_filters/user-exeption.filter";
 import { Book } from "./dto";
+import { extname } from "path";
 
 
 @Controller('book')
@@ -15,9 +18,32 @@ export class BookController {
 
   @Post()
   @UseGuards(AuthGuard) 
-  async createBook(@Body() book: Book) {
-    this.logger.log('Adding a new book');
-    return this.bookService.createBook(book);
+  @UseInterceptors(FileInterceptor('file', {
+    storage: diskStorage({
+      destination: './uploads',
+      filename: (req, file, callback) => {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+        callback(null, `${uniqueSuffix}${extname(file.originalname)}`);
+      }
+    })
+  }))
+  async createBook(
+    @Req() req,
+    @UploadedFile() file: Express.Multer.File) {
+    const { originalname, filename, path } = file;
+
+    // Приклад DTO з файлом
+    const bookDto = {
+      title: req.body.title,
+      author: req.body.author,
+      genre: req.body.genre,
+      description: req.body.description,
+      publication_year: Number(req.body.publication_year),
+      file_url: `/uploads/${filename}`
+    };
+
+    this.logger.log('Adding a new book with file');
+    return this.bookService.createBook(bookDto);
   }
 
   @Get()

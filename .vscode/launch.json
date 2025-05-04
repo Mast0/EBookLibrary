@@ -40,6 +40,20 @@
                 "${workspaceFolder}/back/user-service/dist/**/*.js",
                 "!**/node_modules/**"
             ]
+        },
+        {
+            "name": "BookService Debug",
+            "type": "node",
+            "request": "attach",
+            "port": 9229,
+            "sourceMaps": true,
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "outFiles": [
+                "${workspaceFolder}/back/book-service/dist/**/*.js",
+                "!**/node_modules/**"
+            ]
         }
     ]
 }

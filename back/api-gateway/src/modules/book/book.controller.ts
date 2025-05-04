@@ -3,10 +3,13 @@ import { AuthGuard } from "src/guards/auth.guard";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { diskStorage } from "multer";
 
+import * as fs from 'fs';
+import * as path from 'path';
+import * as pdfParse from 'pdf-parse';
+
 import { BookService } from "./book.service";
 import { UserExeptionFilter } from "../../exeption_filters/user-exeption.filter";
 import { Book } from "./dto";
-import { extname } from "path";
 
 
 @Controller('book')
@@ -23,23 +26,27 @@ export class BookController {
       destination: './uploads',
       filename: (req, file, callback) => {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-        callback(null, `${uniqueSuffix}${extname(file.originalname)}`);
+        callback(null, `${uniqueSuffix}${path.extname(file.originalname)}`);
       }
     })
   }))
   async createBook(
     @Req() req,
     @UploadedFile() file: Express.Multer.File) {
-    const { originalname, filename, path } = file;
+    const { filename, path: filePath } = file;
 
-    // Приклад DTO з файлом
+    const pdfBuffer = fs.readFileSync(filePath);
+    const pdfData = await pdfParse(pdfBuffer);
+    const pages = pdfData.numpages;
+
     const bookDto = {
       title: req.body.title,
       author: req.body.author,
       genre: req.body.genre,
       description: req.body.description,
       publication_year: Number(req.body.publication_year),
-      file_url: `/uploads/${filename}`
+      file_url: `/uploads/${filename}`,
+      pages: pages
     };
 
     this.logger.log('Adding a new book with file');

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getBooks } from "../services/api";
-import { getDefaultFormatCodeSettings } from "typescript";
+import '../styles/BookList.css';
+import ThemeToggle from "./ThemeToggle";
 
 interface Book {
   title: string;
@@ -28,20 +29,36 @@ const BookList = () => {
   }, []);
 
   return (
-    <div>
-      <h2>Books</h2>
-      <a href="/create-book">CreateBook</a>
-      {books.map((book, index) => (
-        <div key={index}>
-          <h3>{book.title} ({book.publication_year})</h3>
-          <p><b>Author:</b> {book.author}</p>
-          <p><b>Genre:</b> {book.genre}</p>
-          <p><b>Description:</b> {book.description}</p>
-          <a href="{book.file_url}" target="_blank" rel="noopener noreferrer">Read</a>
-          <hr />
+    <>
+      <ThemeToggle />
+      <div className="container mt-4">
+        <h2 className="mb-4">Books</h2>
+        <div className="mb-3">
+          <a href="/create-book" className="btn btn-primary">Add New Book</a>
         </div>
-      ))}
-    </div>
+        <div className="book-scroll">
+          {books.map((book, index) => (
+            <div key={index} className="card book-card">
+              <div className="book-image-placeholder bg-secondary">
+                <i className="bi bi-book"></i>
+              </div>
+              <div className="card-body d-flex flex-column">
+                <h6 className="card-title mb-1">{book.title}</h6>
+                <small className="text-muted">{book.publication_year}</small>
+                <p className="card-text mb-1"><strong>Author:</strong> {book.author}</p>
+                <p className="card-text mb-1"><strong>Genre:</strong> {book.genre}</p>
+                <p className="card-text small mb-1"><strong>Description:</strong>{book.description}</p>
+                <a 
+                  href="{book.file_url}" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="btn btn-sm btn-outline-primary mt-auto">Read</a>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </>
   );
 };
 

@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../services/api";
-import { setHeapSnapshotNearHeapLimit } from "v8";
+import "../styles/FormPage.css";
+import ThemeToggle from "./ThemeToggle";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -20,23 +21,26 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      <input 
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input 
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button onClick={handleLogin}>Login</button>
-      <a href="/register">Register</a>
-    </div>
+    <>
+      <ThemeToggle />
+      <div className="form-container">
+        <h2>Login</h2>
+        <input 
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input 
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button onClick={handleLogin}>Login</button>
+        <a href="/register">Register</a>
+      </div>
+    </>
   )
 };
 

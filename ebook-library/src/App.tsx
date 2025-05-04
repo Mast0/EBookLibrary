@@ -1,11 +1,11 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Login from './components/Login';
 import Register from './components/Register';
 import BookList from './components/BookList';
 import CreateBook from './components/CreateBook';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 function App() {
   return (

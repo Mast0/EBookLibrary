@@ -17,6 +17,9 @@ services:
     container_name: user-service
     ports:
       - "3001:3001"
+    depends_on:
+      - postgres
+      - rabbitmq
     environment:
       - BROCKER_URI=${BROCKER_URI}
       - DB_HOST=${DB_HOST}
@@ -32,6 +35,9 @@ services:
     container_name: book-service
     ports:
       - "3002:3002"
+    depends_on:
+      - postgres
+      - rabbitmq
     environment:
       - BROCKER_URI=${BROCKER_URI}
       - DB_HOST=${DB_HOST}
@@ -47,6 +53,9 @@ services:
     container_name: reading-service
     ports:
       - "3003:3003"
+    depends_on:
+      - postgres
+      - rabbitmq
     environment:
       - BROCKER_URI=${BROCKER_URI}
       - DB_HOST=${DB_HOST}
@@ -66,6 +75,25 @@ services:
       - "15672:15672"
     networks:
       - nestjs-network
+
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./init-db:/docker-entrypoint-initdb.d
+    networks:
+      - nestjs-network
+
+volumes:
+  postgres-data:
 
 networks:
   nestjs-network:

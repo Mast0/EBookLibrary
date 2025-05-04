@@ -1,6 +1,8 @@
-import { use, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createBook } from "../services/api";
+import "../styles/FormPage.css";
+import ThemeToggle from "./ThemeToggle";
 
 const CreateBook = () => {
   const [title, setTitle] = useState("");
@@ -39,7 +41,7 @@ const CreateBook = () => {
       formData.append("publication_year", Number(publication_year).toString());
       formData.append("file", file);
 
-      const response = await createBook(formData); // Функція API для створення книги
+      await createBook(formData); // Функція API для створення книги
       navigate("/"); // Перехід на головну сторінку після успішної реєстрації
     } catch (error) {
       console.error("Create book error", error);
@@ -48,53 +50,56 @@ const CreateBook = () => {
   };
 
   return (
-    <div>
-      <h2>Create New Book</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          required
-        />
-        <input
-          type="text"
-          placeholder="Author"
-          value={author}
-          onChange={(e) => setAuthor(e.target.value)}
-          required
-        />
-        <input
-          type="text"
-          placeholder="Genre"
-          value={genre}
-          onChange={(e) => setGenre(e.target.value)}
-          required
-        />
-        <input
-          type="text"
-          placeholder="Description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          required
-        />
-        <input
-          type="number"
-          placeholder="Publication Year"
-          value={publication_year}
-          onChange={(e) => setYear(e.target.value)}
-          required
-        />
-        <input
-          type="file"
-          accept=".pdf"
-          onChange={handleFileChange}
-          required
-        />
-        <button type="submit">Create Book</button>
-      </form>
-    </div>
+    <>
+     <ThemeToggle />
+      <div className="form-container">
+        <h2>Create New Book</h2>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            placeholder="Title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+          />
+          <input
+            type="text"
+            placeholder="Author"
+            value={author}
+            onChange={(e) => setAuthor(e.target.value)}
+            required
+          />
+          <input
+            type="text"
+            placeholder="Genre"
+            value={genre}
+            onChange={(e) => setGenre(e.target.value)}
+            required
+          />
+          <input
+            type="text"
+            placeholder="Description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            required
+          />
+          <input
+            type="number"
+            placeholder="Publication Year"
+            value={publication_year}
+            onChange={(e) => setYear(e.target.value)}
+            required
+          />
+          <input
+            type="file"
+            accept=".pdf"
+            onChange={handleFileChange}
+            required
+          />
+          <button type="submit">Create Book</button>
+        </form>
+      </div>
+    </>
   );
 };
 

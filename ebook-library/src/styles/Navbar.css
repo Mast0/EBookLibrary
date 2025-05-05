@@ -31,4 +31,13 @@
     border: none;
     cursor: pointer;
   }
-  
+
+.navbar-button:hover {
+    background-color: #e2e6ea;
+    text-decoration: none;
+}
+
+body.dark .navbar-button {
+    background-color: #e2e6ea;
+    color: #0d6efd;
+}

@@ -30,13 +30,14 @@
     justify-content: center;
     font-size: 3rem;
     color: #fff;
+    border-radius: 4px 4px 0 0;
 }
 
 /* Dark theme */
 body.dark .book-card {
     background-color: #1e1e1e;
     color: #f1f1f1;
-    box-shadow:  0 2px 5px rgba(255, 255, 255, 0.1);
+    box-shadow:  0 2px 5px rgba(255, 255, 255, 0.216);
 }
 
 body.dark .book-image-placeholder {
@@ -49,4 +50,21 @@ body.dark .book-image-placeholder {
         width: 100vw;
         min-width: 100vw;
     }
+}
+
+.book-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.book-author {
+    font-size: 0.9rem;
+    font-weight: 300;
+    color: #555;
+    margin-bottom: 0.5rem;
+}
+
+body.dark .book-author {
+    color: #aaa;
 }

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getBooks } from "../services/api";
 import '../styles/BookList.css';
 import ThemeToggle from "./ThemeToggle";
+import { Link } from "react-router-dom";
 
 interface Book {
   title: string;
@@ -16,11 +17,11 @@ const BookList = () => {
   const [books, setBooks] = useState<Book[]>([]);
 
   useEffect(() => {
-    const fetchBooks = async() => {
-      try{
+    const fetchBooks = async () => {
+      try {
         const data = await getBooks();
         setBooks(data);
-      } catch (error){
+      } catch (error) {
         console.error("Load books error", error);
         alert("Failed to load books");
       }
@@ -43,16 +44,21 @@ const BookList = () => {
                 <i className="bi bi-book"></i>
               </div>
               <div className="card-body d-flex flex-column">
-                <h6 className="card-title mb-1">{book.title}</h6>
-                <small className="text-muted">{book.publication_year}</small>
-                <p className="card-text mb-1"><strong>Author:</strong> {book.author}</p>
-                <p className="card-text mb-1"><strong>Genre:</strong> {book.genre}</p>
-                <p className="card-text small mb-1"><strong>Description:</strong>{book.description}</p>
-                <a 
-                  href="{book.file_url}" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="btn btn-sm btn-outline-primary mt-auto">Read</a>
+              <h6 className="card-title mb-1 book-title">{book.title}</h6>
+              <p className="book-author mb-2">{book.author}</p>
+                <p className="card-text small mb-1">
+
+                  {book.description.length > 100
+                    ? `${book.description.slice(0, 100)}...`
+                    : book.description}
+                </p>
+                <Link
+                  to="/book-details"
+                  state={{ book }}
+                  className="btn btn-sm btn-outline-secondary mt-auto align-self-end"
+                >
+                  →
+                </Link>
               </div>
             </div>
           ))}

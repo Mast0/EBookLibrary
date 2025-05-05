@@ -59,12 +59,12 @@
 }
 
 body.dark {
-    background-color: #121212;
+    background-color: #121212fb;
     color: #f1f1f1;
 }
 
 body.light {
-    background-color: #ffffff;
+    background-color: #fffffff6;
     color: #000000;
 }
 

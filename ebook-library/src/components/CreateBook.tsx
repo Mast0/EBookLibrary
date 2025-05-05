@@ -41,8 +41,8 @@ const CreateBook = () => {
       formData.append("publication_year", Number(publication_year).toString());
       formData.append("file", file);
 
-      await createBook(formData); // Функція API для створення книги
-      navigate("/"); // Перехід на головну сторінку після успішної реєстрації
+      await createBook(formData);
+      navigate("/");
     } catch (error) {
       console.error("Create book error", error);
       alert("Failed to create book");

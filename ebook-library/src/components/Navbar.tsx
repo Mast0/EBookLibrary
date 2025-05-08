@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import ThemeToggle from "./ThemeToggle";
-import "../styles/Navbar.css"; // Підключаємо стилі
+import "../styles/Navbar.css";
 import "../styles/FormPage.css"
 
 const Navbar = () => {

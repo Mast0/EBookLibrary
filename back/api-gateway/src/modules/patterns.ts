@@ -8,6 +8,7 @@ export const patterns = {
     DELETE:  { cmd: 'delete_user' },
     FIND_BY_EMAIL: { cmd: 'find_user_by_email' },
     RESET_PASSWORD: { cmd: 'reset_password' },
+    GET_ROLE_BY_EMAIL: { cmd: 'get_user_role' }
   },
   AUTH: {
     TOKENS: { cmd: 'auth.tokens' },

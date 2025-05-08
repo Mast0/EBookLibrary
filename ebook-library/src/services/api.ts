@@ -28,6 +28,11 @@ export const register = async (username: string, email: string, password: string
   return response.data;
 };
 
+export const getRole = async (email: string) => {
+  const response = await API.post("/user/role", { email });
+  return response.data;
+};
+
 export const getBooks = async () => {
   const response = await API.get("/book");
   return response.data;

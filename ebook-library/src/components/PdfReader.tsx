@@ -1,11 +1,11 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Document, Page, pdfjs } from "react-pdf";
-import { useEffect, useState } from "react";
+import { useEffect, useState,  } from "react";
 import { getBookPdf } from "../services/api";
+import { getRole } from "../services/api";
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 import '../styles/PdfReader.css';
-import type { PDFDocumentProxy } from 'pdfjs-dist';
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   'pdfjs-dist/build/pdf.worker.min.mjs',
@@ -16,7 +16,6 @@ const options = {
     cMapUrl: '/cmaps/',
     standardFontDataUrl: '/standard_fonts/',
 };
-
 
 const PdfReader = () => {
     const { id } = useParams<{ id: string }>();

@@ -65,4 +65,9 @@ export class UserService {
     this.logger.log(`Resseting password for user with email: ${email}`);
     return this.send(patterns.USER.RESET_PASSWORD, { email });
   }
+
+  async getUSerRoleByEmail(email: string) {
+    this.logger.log(`Getting user role by email: ${email}`);
+    return this.send(patterns.USER.GET_ROLE_BY_EMAIL, email);
+  }
 }

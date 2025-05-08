@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { getBooks } from "../services/api";
+import { checkPermissions } from "../services/check";
 import '../styles/BookList.css';
 import ThemeToggle from "./ThemeToggle";
 import { Link } from "react-router-dom";
-
 interface Book {
   id: string
   title: string;
@@ -12,10 +13,12 @@ interface Book {
   description: string;
   publication_year: number;
   file_url: string;
-}
+};
 
 const BookList = () => {
   const [books, setBooks] = useState<Book[]>([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -36,7 +39,16 @@ const BookList = () => {
       <div className="container mt-4">
         <h2 className="mb-4">Books</h2>
         <div className="mb-3">
-          <a href="/create-book" className="btn btn-primary">Add New Book</a>
+          <button 
+          className="btn btn-primary"
+          onClick={async () => {
+            const hasPermission = await checkPermissions('create');
+            if (hasPermission)
+              navigate('/create-book');
+            else navigate('/')
+          }}>
+            Add New Book
+          </button>
         </div>
         <div className="book-scroll">
           {books.map((book, index) => (
@@ -50,9 +62,15 @@ const BookList = () => {
                 <p className="card-text mb-1"><strong>Author:</strong> {book.author}</p>
                 <p className="card-text mb-1"><strong>Genre:</strong> {book.genre}</p>
                 <p className="card-text small mb-1"><strong>Description:</strong>{book.description}</p>
-                <Link
-                  to={`/read/${book.id}`}
-                  className="btn btn-sm btn-outline-primary mt-auto">Read</Link>
+                <button
+                  className="btn btn-sm btn-outline-primary mt-auto"
+                  onClick={async () => {
+                    const hasPermission = await checkPermissions('create');
+                    if (hasPermission)
+                      navigate(`/read/${book.id}`);
+                    else navigate('/')
+                  }}
+                  >Read</button>
               <h6 className="card-title mb-1 book-title">{book.title}</h6>
               <p className="book-author mb-2">{book.author}</p>
                 <p className="card-text small mb-1">

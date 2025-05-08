@@ -1,15 +1,17 @@
 import { useLocation, useNavigate } from "react-router-dom";
+import { checkPermissions } from "../services/check";
 import ThemeToggle from "./ThemeToggle";
 import "../styles/BookDetails.css";
 
 interface Book {
+  id: string
   title: string;
   author: string;
   genre: string;
   description: string;
   publication_year: number;
   file_url: string;
-}
+};
 
 const BookDetails = () => {
   const location = useLocation();
@@ -33,13 +35,16 @@ const BookDetails = () => {
         <p><strong>Genre:</strong> {book.genre}</p>
         <p><strong>Published:</strong> {book.publication_year}</p>
         <p><strong>Description:</strong> {book.description}</p>
-        <a 
-          href={book.file_url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="btn btn-primary ">
-          Read Book
-        </a>
+        <button
+        className="btn btn-primary"
+        onClick={async () => {
+          const hasPermission = await checkPermissions('read');
+          if (hasPermission)
+            navigate(`/read/${book.id}`)
+          else navigate('/');
+        }}>
+          Read
+        </button>
       </div>
     </>
   );

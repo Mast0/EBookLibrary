@@ -53,4 +53,9 @@ export class UserController {
   async resetPassword(email: string) {
     return this.userService.resetPassword(email);
   }
+
+  @MessagePattern(patterns.USER.GET_ROLE_BY_EMAIL)
+  async getRoleByEmail(email: string) {
+    return this.userService.getUserPermissionsByEmail(email);
+  }
 }

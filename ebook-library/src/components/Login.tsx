@@ -14,7 +14,8 @@ const Login = () => {
     try {
       const tokens = await login(email, password);
       localStorage.setItem("accessToken", tokens.accessToken);
-      authLogin(); // оновлює контекст
+      localStorage.setItem("userEmail", email);
+      authLogin();
       navigate("/");
     } catch (error) {
       console.error("Login error", error);

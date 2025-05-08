@@ -5,6 +5,7 @@ import ThemeToggle from "./ThemeToggle";
 import { Link } from "react-router-dom";
 
 interface Book {
+  id: string
   title: string;
   author: string;
   genre: string;
@@ -44,6 +45,14 @@ const BookList = () => {
                 <i className="bi bi-book"></i>
               </div>
               <div className="card-body d-flex flex-column">
+                <h6 className="card-title mb-1">{book.title}</h6>
+                <small className="text-muted">{book.publication_year}</small>
+                <p className="card-text mb-1"><strong>Author:</strong> {book.author}</p>
+                <p className="card-text mb-1"><strong>Genre:</strong> {book.genre}</p>
+                <p className="card-text small mb-1"><strong>Description:</strong>{book.description}</p>
+                <Link
+                  to={`/read/${book.id}`}
+                  className="btn btn-sm btn-outline-primary mt-auto">Read</Link>
               <h6 className="card-title mb-1 book-title">{book.title}</h6>
               <p className="book-author mb-2">{book.author}</p>
                 <p className="card-text small mb-1">

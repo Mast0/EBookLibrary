@@ -37,3 +37,11 @@ export const createBook = async (formData: FormData) => {
   const response = await API.post('/book', formData);
   return response.data;
 };
+
+export const getBookPdf = async (id: string) => {
+  const response = await API.get(`/book/${id}/pdf`, {
+    responseType: 'blob'
+  });
+  const blob = await response.data;
+  return URL.createObjectURL(blob);
+};

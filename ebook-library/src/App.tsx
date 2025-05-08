@@ -8,13 +8,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from './components/Navbar';
 import Logout from './components/Logout';
 import { AuthProvider } from './contexts/AuthContext';
+import PdfReader from './components/PdfReader';
 import BookDetails from './components/BookDetails';
 
 
 function App() {
   return (
     <BrowserRouter>
-    <AuthProvider>
+      <AuthProvider>
         <Navbar />
         <Routes>
           <Route path='/login' element={<Login />} />
@@ -22,6 +23,8 @@ function App() {
           <Route path='/' element={<BookList />} />
           <Route path="/create-book" element={<CreateBook />} />
           <Route path="/logout" element={<Logout />} />
+          <Route path='/read/:id' element={<PdfReader /> }/>
+        </Routes>
           <Route path="/book-details" element={<BookDetails />} />
           </Routes>
       </AuthProvider>

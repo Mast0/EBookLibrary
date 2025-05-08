@@ -24,9 +24,8 @@ function App() {
           <Route path="/create-book" element={<CreateBook />} />
           <Route path="/logout" element={<Logout />} />
           <Route path='/read/:id' element={<PdfReader /> }/>
-        </Routes>
           <Route path="/book-details" element={<BookDetails />} />
-          </Routes>
+        </Routes>
       </AuthProvider>
     </BrowserRouter>
   );

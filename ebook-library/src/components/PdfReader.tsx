@@ -17,27 +17,44 @@ const options = {
     standardFontDataUrl: '/standard_fonts/',
 };
 
+const MAX_RETRIES = 5;
+
 const PdfReader = () => {
     const { id } = useParams<{ id: string }>();
     const [numPages, setNumPages] = useState<number | null>(null);
     const [pageNumber, setPageNumber] = useState(1);
     const [file, setFile] = useState<string | null>(null);
+    const [retryCount, setRetryCount] = useState(0);
+    const [error, setError] = useState<string | null>(null);
+
+    const fetchPdf = async (attempt = 1) => {
+        try {
+          if (!id) {
+            setError("No book ID provided");
+            return;
+          }
+    
+          const timeout = new Promise<never>((_, reject) =>
+            setTimeout(() => reject(new Error("Request timed out")), 5000)
+          );
+    
+          const blobUrl = await Promise.race([getBookPdf(id), timeout]);
+    
+          setFile(blobUrl);
+          setError(null);
+        } catch (err) {
+          if (attempt < MAX_RETRIES) {
+            console.warn(`Retrying to load PDF... Attempt ${attempt + 1}`);
+            setTimeout(() => fetchPdf(attempt + 1), 1000 * attempt); // exponential backoff
+          } else {
+            console.error("Failed to load PDF after retries:", err);
+            setError("Failed to load PDF.");
+          }
+        }
+      };
+    
 
     useEffect(() => {
-        const fetchPdf = async () => {
-            try{
-                if (id){
-                    const blobUrl = await getBookPdf(id);
-                    setFile(blobUrl);
-                }
-                else {
-                    console.error("Have no ID");
-                }
-            } catch (error) {
-                console.error("Error loading PDF:", error);
-            }
-        }
-
         fetchPdf();
     }, [id]);
 
@@ -46,11 +63,21 @@ const PdfReader = () => {
         setPageNumber(1);
     };
 
+    const onDocumentLoadError = (err: Error) => {
+        console.error("PDF render error:", err);
+        if (retryCount < MAX_RETRIES) {
+          setRetryCount(retryCount + 1);
+          fetchPdf(retryCount + 1);
+        } else {
+          setError("Unable to load PDF document.");
+        }
+      };
+
     return (
         <div className="pdf-reader">
             {file ? (
                 <>
-                    <Document file={file} options={options} onLoadSuccess={onDocumentLoadSuccess}>
+                    <Document file={file} options={options} onLoadSuccess={onDocumentLoadSuccess} onLoadError={onDocumentLoadError}>
                         <Page pageNumber={pageNumber}></Page>
                     </Document>
                     <div className="controls">

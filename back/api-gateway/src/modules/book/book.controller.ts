@@ -1,4 +1,5 @@
-import { Controller, Logger, Post, Param, Put, Body, UseGuards, Get, UseFilters, UploadedFile, UseInterceptors, Req } from "@nestjs/common";
+import { Controller, Logger, Post, Param, Put, Body, UseGuards, Get, UseFilters, UploadedFile, UseInterceptors, Req, Header, Res } from "@nestjs/common";
+import { Response } from "express";
 import { AuthGuard } from "src/guards/auth.guard";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { diskStorage } from "multer";
@@ -63,6 +64,19 @@ export class BookController {
   async getBookById(@Param('id') id: string) {
     this.logger.log(`Getting book by id: ${id}`);
     return this.bookService.findBookById(id);
+  }
+
+  @Get(':id/pdf')
+  @Header('Content-Type', 'application/pdf')
+  @Header('Content-Disposition', 'inline; filename="book.pdf"')
+  async getBookPdf(@Param('id') id: string, @Res() res: Response) {
+    const stream = await this.bookService.getBookPdfStream(id);
+
+    stream.on('error', err => {
+      res.status(404).send('File not found');
+    });
+    
+    stream.pipe(res);
   }
 
   @Put(':id')

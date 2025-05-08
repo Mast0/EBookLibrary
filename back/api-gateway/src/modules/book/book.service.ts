@@ -3,6 +3,9 @@ import { ClientProxy, RpcException } from "@nestjs/microservices";
 import { timeout, catchError, throwError, firstValueFrom } from "rxjs";
 import { Book } from "./dto";
 import { patterns } from "../patterns";
+import { Readable } from "stream";
+import { createReadStream } from "fs";
+import * as path from "path";
 
 @Injectable()
 export class BookService {
@@ -52,5 +55,16 @@ export class BookService {
   async findBookByAuthor(author: string) {
     this.logger.log(`Finding book by title: ${author}`);
     return this.send(patterns.BOOK.FIND_BY_AUTHOR, { author });
+  }
+
+  async getBookPdfStream(id: string): Promise<Readable> {
+    this.logger.log(`Finding book path by book id: ${id}`);
+
+    const book: Book = await this.send(patterns.BOOK.FIND_BY_ID, { id });
+    const file_url = path.join(process.cwd(), book.file_url)
+
+    this.logger.log(`Resolved file path: ${file_url}`);
+
+    return createReadStream(file_url);
   }
 }

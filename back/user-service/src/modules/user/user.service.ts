@@ -29,9 +29,8 @@ export class UserService {
     const userPassword = await bcrypt.hash(password, 10);
 
     const roleEntity = await this.roleRepository.findOneBy({ name: role });
-    if (!roleEntity) {
+    if (!roleEntity)
       throw new RpcException(new NotFoundException(`Role ${role} not found`));
-    }
 
     const userData = {
       email,
@@ -60,14 +59,12 @@ export class UserService {
 
     const user = await this.findUserByEmail(email);
 
-    if (!user) {
+    if (!user)
       throw new RpcException(new UnauthorizedException('Invalid email'))
-    }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
+    if (!isPasswordValid)
       throw new RpcException(new UnauthorizedException('Invalid email or password'))
-    }
 
     const tokenPayload: TokenPayload = {
       member_id: user.id,
@@ -87,14 +84,12 @@ export class UserService {
 
   async updateUser(id: string, dto: UserDTO) {
     const user = await this.findUserById(id);
-    if (!user) {
+    if (!user)
       throw new RpcException(new NotFoundException('User not found'));
-    }
 
     const roleEntity = await this.roleRepository.findOneBy({ name: dto.role });
-    if (!roleEntity) {
+    if (!roleEntity)
       throw new RpcException(new NotFoundException(`Role ${dto.role} not found`));
-    }
 
     const { role: _, ...updateData } = dto;
     
@@ -112,21 +107,30 @@ export class UserService {
 
   async deleteUser(id: string) {
     const user = await this.findUserById(id);
-    if (!user) {
+    if (!user)
       throw new RpcException(new NotFoundException('User not found'));
-    }
+
     return await this.userRepository.delete(id);
   }
 
   async findUserByEmail(email: string) {
-    return await this.userRepository.findOne({ where: { email } });
+    return await this.userRepository.findOneBy({ email: email });
   }
 
   async resetPassword(email: string) {
     const user = await this.findUserByEmail(email);
-    if (!user) {
+    if (!user)
       throw new RpcException(new NotFoundException('User not found'));
-    }
+
     return await this.userRepository.save({ ...user, password: '123456' });
+  }
+
+  async getUserPermissionsByEmail(email: string){
+    const user = await this.findUserByEmail(email);
+    if (!user)
+      throw new RpcException(new NotFoundException('User not found'));
+    
+    const role = await this.roleRepository.findOneBy({ id: user.role_id })
+    return role;
   }
 }

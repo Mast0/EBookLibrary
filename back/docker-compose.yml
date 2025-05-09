@@ -3,6 +3,8 @@ services:
   api-gateway:
     build: ./api-gateway
     container_name: api-gateway
+    volumes:
+      - ./uploads:/app/uploads
     ports:
       - "3000:3000"
     depends_on:

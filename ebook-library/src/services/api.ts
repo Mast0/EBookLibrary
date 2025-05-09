@@ -1,4 +1,5 @@
 import axios from "axios";
+import { cursorTo } from "readline";
 
 const API = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -28,6 +29,11 @@ export const register = async (username: string, email: string, password: string
   return response.data;
 };
 
+export const getUserByEmail = async(email: string) => {
+  const response = await API.post('/user/get', { email });
+  return response.data;
+};
+
 export const getRole = async (email: string) => {
   const response = await API.post("/user/role", { email });
   return response.data;
@@ -49,4 +55,30 @@ export const getBookPdf = async (id: string) => {
   });
   const blob = await response.data;
   return URL.createObjectURL(blob);
+};
+
+export const createReading = async(user_id: string, book_id: string, curPage: number) => {
+  const response = await API.post('/reading', {
+    user_id,
+    book_id,
+    current_page: curPage
+  });
+  return response.data;
+};
+
+export const getReading = async(user_id: string, book_id: string) => {
+  const response = await API.post('/reading/get', {
+    user_id,
+    book_id
+  });
+  return response.data;
+};
+
+export const updateReading = async(user_id: string, book_id: string, curPage: number) => {
+  const response = await API.put('/reading', {
+    user_id,
+    book_id,
+    current_page: curPage
+  });
+  return response.data;
 };

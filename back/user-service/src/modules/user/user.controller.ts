@@ -30,8 +30,8 @@ export class UserController {
   }
 
   @MessagePattern(patterns.USER.FIND_BY_ID)
-  async findUserById(id: string) {
-    return this.userService.findUserById(id);
+  async findUserById(data: { user_id: string }) {
+    return this.userService.findUserById(data.user_id);
   }
 
   @MessagePattern(patterns.USER.UPDATE)

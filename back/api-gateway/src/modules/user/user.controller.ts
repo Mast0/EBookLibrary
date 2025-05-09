@@ -1,4 +1,4 @@
-import { Controller, Logger, Post, Body, Request, UseGuards, Get, UseFilters } from "@nestjs/common";
+import { Controller, Logger, Post, Body, Request, UseGuards, Get, UseFilters, Param } from "@nestjs/common";
 import { AuthGuard } from "src/guards/auth.guard";
 
 import { UserService } from "./user.service";
@@ -29,6 +29,13 @@ export class UserController {
   async getUserRoleByEmail(@Body() getRole: GetRole){
     this.logger.log(`Getting User Role By Email ${getRole.email}`);
     return this.userService.getUSerRoleByEmail(getRole.email);
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('get')
+  async getUserByID(@Body() data: { email: string }){
+    this.logger.log(`Getting User By Email ${data.email}`);
+    return this.userService.findUserByEmail(data.email);
   }
 
   @UseGuards(AuthGuard)

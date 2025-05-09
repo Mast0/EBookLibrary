@@ -22,9 +22,15 @@ export class ReadingController {
     return await this.readingService.getAllReadings(data.user_id);
   }
 
+  @MessagePattern(patterns.READING.FIND_READING)
+  async findReading(data: { user_id: string, book_id: string }){
+    this.logger.log('Finding reading by user and book ids');
+    return await this.readingService.getReading(data.user_id, data.book_id);
+  }
+
   @MessagePattern(patterns.READING.UPDATE)
-  async updateReading(data: {id: string, dto: ReadingDto}){
+  async updateReading(data: {user_id: string, book_id: string, curPage: number}){
     this.logger.log('Updating reading');
-    return await this.readingService.updateReading(data.id, data.dto);
+    return await this.readingService.updateReading(data.user_id, data.book_id, data.curPage);
   }
 }

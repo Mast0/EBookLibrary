@@ -34,8 +34,13 @@ export class ReadingService {
     return this.send(patterns.READING.FIND_ALL, {});
   }
 
-  async updateReading(id: string, dto: Reading) {
+  async findReading(user_id: string, book_id: string){
+    this.logger.log('Finding reading by user and book ids');
+    return this.send(patterns.READING.FIND_READING, { user_id, book_id });
+  }
+
+  async updateReading(user_id: string, book_id: string, curPage: number) {
     this.logger.log('Updating reading');
-    return this.send(patterns.READING.UPDATE, { id, dto });
+    return this.send(patterns.READING.UPDATE, { user_id, book_id, curPage });
   }
 }

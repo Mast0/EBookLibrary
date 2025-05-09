@@ -2,7 +2,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Document, Page, pdfjs } from "react-pdf";
 import { useEffect, useState,  } from "react";
 import { getBookPdf } from "../services/api";
-import { getRole } from "../services/api";
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 import '../styles/PdfReader.css';
@@ -18,6 +17,12 @@ const options = {
 };
 
 const MAX_RETRIES = 5;
+
+export interface Reading {
+  user_id: string;
+  book_id: string;
+  current_page: number;
+}
 
 const PdfReader = () => {
     const { id } = useParams<{ id: string }>();
@@ -45,7 +50,7 @@ const PdfReader = () => {
         } catch (err) {
           if (attempt < MAX_RETRIES) {
             console.warn(`Retrying to load PDF... Attempt ${attempt + 1}`);
-            setTimeout(() => fetchPdf(attempt + 1), 1000 * attempt); // exponential backoff
+            setTimeout(() => fetchPdf(attempt + 1), 1000 * attempt);
           } else {
             console.error("Failed to load PDF after retries:", err);
             setError("Failed to load PDF.");

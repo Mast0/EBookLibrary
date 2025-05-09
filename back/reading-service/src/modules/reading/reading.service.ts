@@ -53,25 +53,25 @@ export class ReadingService {
     return await this.readingRepository.findBy({ user_id });
   }
 
-  async updateReading(id: string, dto: ReadingDto) {
-    const reading = await this.readingRepository.findOne({ where: { id } });
+  async getReading(user_id: string, book_id: string){
+    return await this.readingRepository.findOneBy({ user_id, book_id });
+  }
+
+  async updateReading(user_id: string, book_id: string, curPage: number) {
+    const reading = await this.readingRepository.findOne({
+      where: { user_id, book_id },
+      relations: { book: true },
+    });
     if (!reading){
       throw new RpcException(new NotFoundException('Reading Not Found'));
     }
-    const { user_id, book_id, current_page } = dto;
 
-    const book = await this.bookRepository.findOne({ where: { id: book_id } });
-    if (!book)
-      throw new RpcException(new NotFoundException('Book not found'));
-
-    if (current_page > book.pages)
+    if (curPage > reading.book.pages)
       throw new RpcException(new BadRequestException('Current page is higher than pages in book'));
-    const percentage_read = Math.round(current_page/book.pages*100);
+    const percentage_read = Math.round(curPage/reading.book.pages*100);
 
     try{
-      reading.user_id = user_id;
-      reading.book_id = book_id;
-      reading.current_page = current_page;
+      reading.current_page = curPage;
       reading.percentage_read = percentage_read;
       return await this.readingRepository.save(reading);
     }

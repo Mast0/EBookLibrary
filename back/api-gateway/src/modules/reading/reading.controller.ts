@@ -20,16 +20,22 @@ export class ReadingController {
   }
 
   @Get(':userId')
-  async findReadings(@Param('id') user_id: string) {
+  async findReadings(@Param('userId') user_id: string) {
     this.logger.log(`Finding readings`);
     return this.readingService.findReadings(user_id);
   }
 
-  @Put(':id')
+  @Post('/get')
+  async findReading(@Body() data: { user_id: string, book_id: string }){
+    this.logger.log(`Finding reading by user and book ids`);
+    return this.readingService.findReading(data.user_id, data.book_id);
+  }
+
+  @Put()
   @UseGuards(AuthGuard)
-  async udateReading(@Param('id') id: string, @Body() reading: Reading) {
-    this.logger.log(`Updating reading ${id}`);
-    return this.readingService.updateReading(id, reading);
+  async udateReading(@Body() data: { user_id: string, book_id: string, curPage: number }) {
+    this.logger.log(`Updating reading`);
+    return this.readingService.updateReading(data.user_id, data.book_id, data.curPage);
   }
 
 }

@@ -4,7 +4,9 @@ import { time } from "console";
 
 interface Role {
     name: string;
-    permissions: string[];
+    permissions: {
+      permissions: string[];
+    };
   };
 
 export const checkPermissions = async (permission: string): Promise<boolean> => {
@@ -21,8 +23,9 @@ export const checkPermissions = async (permission: string): Promise<boolean> => 
         timeout
       ]);
       console.log(role);
-      return role.permissions.includes(permission);
-    } catch {
+      return role.permissions.permissions.includes(permission);
+    } catch (err) {
+      console.error(err);
       alert('You are not authorized!');
       return false;
     }

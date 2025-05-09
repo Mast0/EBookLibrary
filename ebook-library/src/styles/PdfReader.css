@@ -59,3 +59,8 @@ body.dark .controls button {
 body.dark .controls button:hover {
     background-color: #666;
 }
+
+.page-clickable-area {
+    cursor: pointer;
+  }
+  

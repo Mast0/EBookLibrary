@@ -2,6 +2,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { checkPermissions } from "../services/check";
 import ThemeToggle from "./ThemeToggle";
 import "../styles/BookDetails.css";
+import { Link } from "react-router-dom";
 
 interface Book {
   id: string
@@ -35,16 +36,12 @@ const BookDetails = () => {
         <p><strong>Genre:</strong> {book.genre}</p>
         <p><strong>Published:</strong> {book.publication_year}</p>
         <p><strong>Description:</strong> {book.description}</p>
-        <button
-        className="btn btn-primary"
-        onClick={async () => {
-          const hasPermission = await checkPermissions('read');
-          if (hasPermission)
-            navigate(`/read/${book.id}`)
-          else navigate('/');
-        }}>
-          Read
-        </button>
+        <Link
+            to={`/read/${book.id}`}
+            className="btn btn-sm btn-outline-primary flex-grow-1 me-2"
+          >
+            Read
+          </Link>
       </div>
     </>
   );

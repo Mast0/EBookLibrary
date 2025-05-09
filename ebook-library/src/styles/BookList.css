@@ -20,6 +20,7 @@
     width: 200px;
     min-width: 200px;
     scroll-snap-align: start;
+    box-shadow:  0 2px 5px rgba(0, 0, 0, 0.284);
 }
 
 .book-image-placeholder {

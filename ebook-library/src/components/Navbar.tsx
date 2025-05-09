@@ -3,6 +3,7 @@ import { useAuth } from "../contexts/AuthContext";
 import ThemeToggle from "./ThemeToggle";
 import "../styles/Navbar.css"; // Підключаємо стилі
 import "../styles/FormPage.css"
+import { FaHome } from 'react-icons/fa'; 
 
 const Navbar = () => {
   const { isAuthenticated, logout } = useAuth();
@@ -17,6 +18,9 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="navbar-buttons">
+        <Link to="/" className="icon-home">
+          <FaHome /> 
+        </Link>
         {isAuthenticated ? (
           <button onClick={handleLogout} className="navbar-button">Logout</button>
         ) : (

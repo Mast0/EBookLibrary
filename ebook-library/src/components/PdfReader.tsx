@@ -116,24 +116,45 @@ const PdfReader = () => {
         }
       };
 
-    return (
+      const handlePageClick = (e: React.MouseEvent<HTMLDivElement>) => {
+        const bounds = e.currentTarget.getBoundingClientRect();
+        const clickX = e.clientX;
+      
+        if (clickX < bounds.left + bounds.width / 2) {
+          setPageNumber((prev) => Math.max(prev - 1, 1));
+        } else {
+          setPageNumber((prev) => (numPages && prev < numPages ? prev + 1 : prev));
+        }
+      };
+      
+
+      return (
         <div className="pdf-reader">
-            {file ? (
-                <>
-                    <Document file={file} options={options} onLoadSuccess={onDocumentLoadSuccess} onLoadError={onDocumentLoadError}>
-                        <Page pageNumber={pageNumber}></Page>
-                    </Document>
-                    <div className="controls">
-                        <button onClick={() => setPageNumber(p => Math.max(p - 1, 1))} disabled={pageNumber <= 1}>←</button>
-                        <span>Page {pageNumber} of {numPages}</span>
-                        <button onClick={() => setPageNumber(p => (numPages && p < numPages ? p + 1 : p))} disabled={pageNumber === numPages}>→</button>
-                    </div>
-                </>
-            ) : (
-                <p>Loading PDF...</p>
-            )}
+          {file ? (
+            <>
+              <div className="page-clickable-area" onClick={handlePageClick}>
+                <Document
+                  file={file}
+                  options={options}
+                  onLoadSuccess={onDocumentLoadSuccess}
+                  onLoadError={onDocumentLoadError}
+                >
+                  <Page pageNumber={pageNumber} />
+                </Document>
+              </div>
+      
+              <div className="controls">
+                <button onClick={() => setPageNumber(p => Math.max(p - 1, 1))} disabled={pageNumber <= 1}>←</button>
+                <span>Page {pageNumber} of {numPages}</span>
+                <button onClick={() => setPageNumber(p => (numPages && p < numPages ? p + 1 : p))} disabled={pageNumber === numPages}>→</button>
+              </div>
+            </>
+          ) : (
+            <p>Loading PDF...</p>
+          )}
         </div>
-    );
+      );
+      
 };
 
 export default PdfReader;

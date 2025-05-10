@@ -28,7 +28,7 @@ export class UserController {
   @Post('role')
   async getUserRoleByEmail(@Body() getRole: GetRole){
     this.logger.log(`Getting User Role By Email ${getRole.email}`);
-    return this.userService.getUSerRoleByEmail(getRole.email);
+    return this.userService.getUserRoleByEmail(getRole.email);
   }
 
   @UseGuards(AuthGuard)

@@ -33,9 +33,9 @@ export class ReadingController {
 
   @Put()
   @UseGuards(AuthGuard)
-  async udateReading(@Body() data: { user_id: string, book_id: string, curPage: number }) {
+  async udateReading(@Body() data: { user_id: string, book_id: string, current_page: number }) {
     this.logger.log(`Updating reading`);
-    return this.readingService.updateReading(data.user_id, data.book_id, data.curPage);
+    return this.readingService.updateReading(data.user_id, data.book_id, data.current_page);
   }
 
 }

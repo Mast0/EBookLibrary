@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { Document, Page, pdfjs } from "react-pdf";
 import { useEffect, useState,  } from "react";
-import { getBookPdf } from "../services/api";
+import { createReading, getBookPdf, getReading, getUserByEmail, updateReading } from "../services/api";
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 import '../styles/PdfReader.css';
@@ -31,37 +31,75 @@ const PdfReader = () => {
     const [file, setFile] = useState<string | null>(null);
     const [retryCount, setRetryCount] = useState(0);
     const [error, setError] = useState<string | null>(null);
+    const [userId, setUserId] = useState<string | null>(null);
+    const [isReady, setIsready] = useState(false);
 
     const fetchPdf = async (attempt = 1) => {
-        try {
-          if (!id) {
-            setError("No book ID provided");
-            return;
-          }
-    
-          const timeout = new Promise<never>((_, reject) =>
-            setTimeout(() => reject(new Error("Request timed out")), 5000)
-          );
-    
-          const blobUrl = await Promise.race([getBookPdf(id), timeout]);
-    
-          setFile(blobUrl);
-          setError(null);
-        } catch (err) {
-          if (attempt < MAX_RETRIES) {
-            console.warn(`Retrying to load PDF... Attempt ${attempt + 1}`);
-            setTimeout(() => fetchPdf(attempt + 1), 1000 * attempt);
-          } else {
-            console.error("Failed to load PDF after retries:", err);
-            setError("Failed to load PDF.");
-          }
+      try {
+        if (!id) {
+          setError("No book ID provided");
+          return;
         }
-      };
+  
+        const timeout = new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new Error("Request timed out")), 5000)
+        );
+  
+        const blobUrl = await Promise.race([getBookPdf(id), timeout]);
+  
+        setFile(blobUrl);
+        setError(null);
+      } catch (err) {
+        if (attempt < MAX_RETRIES) {
+          console.warn(`Retrying to load PDF... Attempt ${attempt + 1}`);
+          setTimeout(() => fetchPdf(attempt + 1), 1000 * attempt);
+        } else {
+          console.error("Failed to load PDF after retries:", err);
+          setError("Failed to load PDF.");
+        }
+      }
+    };
     
+    const init = async () => {
+      try{
+        const email = localStorage.getItem('userEmail');
+        if (!email || !id) return;
+
+        const user = await getUserByEmail(email);
+        setUserId(user.id);
+
+        const reading: Reading = await getReading(user.id, id);
+        setPageNumber(reading.current_page || 1);
+      } catch(error){
+        console.log("No previous reading progress or error:", error);
+        setPageNumber(1);
+      } finally {
+        setIsready(true);
+      }
+
+      await fetchPdf(); 
+    };
 
     useEffect(() => {
-        fetchPdf();
+        init();
     }, [id]);
+
+    useEffect(() => {
+      if (!isReady || !userId || !id) return;
+
+      const saveProgress = async () => {
+        try{
+          await updateReading(userId, id, pageNumber);
+        } catch (err) {
+          try{
+            await createReading(userId, id, pageNumber);
+          } catch (e) {
+            console.error("Failed to save reading progress:", e);
+          }
+        };
+      }
+        saveProgress();
+    }, [pageNumber]);
 
     const onDocumentLoadSuccess = ({numPages}: {numPages: number}) => {
         setNumPages(numPages);

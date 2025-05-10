@@ -19,7 +19,7 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="navbar-buttons">
         <Link to="/" className="icon-home">
-          <FaHome /> 
+          <FaHome />
         </Link>
         {isAuthenticated ? (
           <button onClick={handleLogout} className="navbar-button">Logout</button>

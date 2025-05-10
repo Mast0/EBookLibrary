@@ -58,7 +58,7 @@ export class UserService {
 
   async findUserByEmail(email: string) {
     this.logger.log(`Finding user bu email: ${email}`);
-    return this.send(patterns.USER.FIND_BY_EMAIL, { email });
+    return this.send(patterns.USER.FIND_BY_EMAIL, email);
   }
 
   async resetPassword(email: string) {
@@ -66,7 +66,7 @@ export class UserService {
     return this.send(patterns.USER.RESET_PASSWORD, { email });
   }
 
-  async getUSerRoleByEmail(email: string) {
+  async getUserRoleByEmail(email: string) {
     this.logger.log(`Getting user role by email: ${email}`);
     return this.send(patterns.USER.GET_ROLE_BY_EMAIL, email);
   }

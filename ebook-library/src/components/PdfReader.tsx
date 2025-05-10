@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Document, Page, pdfjs } from "react-pdf";
 import { useEffect, useState,  } from "react";
 import { createReading, getBookPdf, getReading, getUserByEmail, updateReading } from "../services/api";

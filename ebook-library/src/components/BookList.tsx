@@ -96,13 +96,20 @@ const BookList = () => {
                       ></div>
                 </div>
                 <p className="card-text small mb-1">{reading.percentage_read.toFixed(0)}% read</p>
-
-                <div className="mt-auto">
+                
+                <div className="mt-auto d-flex justify-content-between">
                   <Link
                     to={`/read/${book.id}`}
-                    className="btn btn-sm btn-outline-success w-100"
+                    className="btn btn-sm btn-outline-success flex-grow-1 me-2 w-100"
                   >
                     Resume
+                  </Link>
+                  <Link
+                    to="/book-details"
+                    state={{ book }}
+                    className="btn btn-sm btn-outline-secondary"
+                  >
+                    →
                   </Link>
                 </div>
               </div>

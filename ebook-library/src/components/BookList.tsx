@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { getBooks, getReadings, getUserByEmail } from "../services/api";
-import { checkPermissions } from "../services/check";
 import '../styles/BookList.css';
 import ThemeToggle from "./ThemeToggle";
 import { Link } from "react-router-dom";
@@ -26,8 +24,6 @@ interface Reading {
 const BookList = () => {
   const [books, setBooks] = useState<Book[]>([]);
   const [readingBooks, setReadingBooks] = useState<{book: Book, reading: Reading}[]>([]);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -62,7 +58,7 @@ const BookList = () => {
   return (
     <>
       <ThemeToggle />
-      <div className="container mt-4">
+      { readingBooks.length > 0 && (<div className="container mt-4">
         <h2 className="mb-4">Continue Reading</h2>
         <div className="book-scroll">
           {readingBooks.map(({book, reading}, index) => (
@@ -116,20 +112,16 @@ const BookList = () => {
             </div>
           ))}
         </div>
-      </div>
+      </div>)}
       <div className="container mt-4">
         <h2 className="mb-4">Books</h2>
         <div className="mb-3">
-          <button 
-          className="btn btn-primary"
-          onClick={async () => {
-            const hasPermission = await checkPermissions('create');
-            if (hasPermission)
-              navigate('/create-book');
-            else navigate('/')
-          }}>
+          <Link 
+            to={"/create-book"}
+            className="btn btn-primary"
+          >
             Add New Book
-          </button>
+          </Link>
         </div>
         <div className="book-scroll">
           {books.map((book, index) => (

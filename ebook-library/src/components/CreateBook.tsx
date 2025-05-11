@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createBook, getRole } from "../services/api";
 import "../styles/FormPage.css";
 import ThemeToggle from "./ThemeToggle";
+import { checkPermissions } from "../services/check";
 
 const CreateBook = () => {
   const [title, setTitle] = useState("");
@@ -48,6 +49,15 @@ const CreateBook = () => {
       alert("Failed to create book");
     }
   };
+
+  useEffect(() => {
+    const verifyPermission = async () => {
+      const hasPermission = await checkPermissions('create');
+      if (!hasPermission)
+        navigate('/not-found', { replace: true });
+    };
+    verifyPermission();
+  }, [navigate]);
 
   return (
     <>

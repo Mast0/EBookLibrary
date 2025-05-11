@@ -1,7 +1,8 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Document, Page, pdfjs } from "react-pdf";
-import { useEffect, useState,  } from "react";
+import { useEffect, useState, } from "react";
 import { createReading, getBookPdf, getReading, getUserByEmail, updateReading } from "../services/api";
+import { checkPermissions } from "../services/check";
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 import '../styles/PdfReader.css';
@@ -34,6 +35,8 @@ const PdfReader = () => {
     const [userId, setUserId] = useState<string | null>(null);
     const [isReady, setIsready] = useState(false);
 
+    const navigate = useNavigate();
+
     const fetchPdf = async (attempt = 1) => {
       try {
         if (!id) {
@@ -44,6 +47,10 @@ const PdfReader = () => {
         const timeout = new Promise<never>((_, reject) =>
           setTimeout(() => reject(new Error("Request timed out")), 5000)
         );
+
+        setNumPages(null);
+        setPageNumber(0);
+        setFile(null);
   
         const blobUrl = await Promise.race([getBookPdf(id), timeout]);
   
@@ -101,9 +108,20 @@ const PdfReader = () => {
         saveProgress();
     }, [pageNumber]);
 
+    useEffect(() => {
+        const verifyPermission = async () => {
+          const hasPermission = await checkPermissions('create');
+          if (!hasPermission)
+            navigate('/not-found', { replace: true });
+        };
+        verifyPermission();
+      }, [navigate]);
+
     const onDocumentLoadSuccess = ({numPages}: {numPages: number}) => {
         setNumPages(numPages);
-        setPageNumber(1);
+        if (pageNumber > numPages) {
+          setPageNumber(1);
+        }
     };
 
     const onDocumentLoadError = (err: Error) => {
@@ -139,7 +157,9 @@ const PdfReader = () => {
                   onLoadSuccess={onDocumentLoadSuccess}
                   onLoadError={onDocumentLoadError}
                 >
-                  <Page pageNumber={pageNumber} />
+                  {numPages !== null && (
+                    <Page pageNumber={pageNumber} />
+                  )}
                 </Document>
               </div>
       

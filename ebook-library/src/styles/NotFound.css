@@ -1,0 +1,94 @@
+.not-found-container {
+  text-align: center;
+  padding: 4rem 1rem;
+  color: #222;
+  background-color: #f9f9f9;
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.not-found-title {
+  font-size: 6rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.not-found-message {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.not-found-button {
+  font-size: 1rem;
+  padding: 0.5rem 1.5rem;
+}
+
+.not-found-icon {
+  position: relative;
+  width: 4rem;
+  height: 4rem;
+  margin-bottom: 1rem;
+}
+
+.book {
+  position: absolute;
+  font-size: 4rem;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  text-align: center;
+  line-height: 4rem;
+  transform-origin: center;
+}
+
+.book-open {
+  animation: closeBookOut 1s ease-in-out forwards;
+}
+
+.book-closed {
+  opacity: 0;
+  animation: closeBookIn 1s ease-in-out forwards;
+  animation-delay: 0.5s;
+}
+
+@keyframes closeBookOut {
+  0% {
+    transform: scale(1) rotateY(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.8) rotateY(90deg);
+    opacity: 0;
+  }
+}
+
+@keyframes closeBookIn {
+  0% {
+    transform: scale(0.8) rotateY(-90deg);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) rotateY(0deg);
+    opacity: 1;
+  }
+}
+
+/* Dark theme */
+body.dark .not-found-container{
+  background-color: #121212;
+  color: #f1f1f1;
+}
+
+body.dark .not-found-button {
+  border-color: #f1f1f1;
+  color: #f1f1f1;
+}
+
+body.dark .not-found-button:hover {
+  background-color: #f1f1f1;
+  color: #121212;
+}

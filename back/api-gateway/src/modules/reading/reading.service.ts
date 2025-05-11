@@ -29,9 +29,9 @@ export class ReadingService {
     return this.send(patterns.READING.CREATE, dto);
   }
 
-  async findReadings(id: string) {
+  async findReadings(user_id: string) {
     this.logger.log('Finding readings');
-    return this.send(patterns.READING.FIND_ALL, {});
+    return this.send(patterns.READING.FIND_USER_ALL, { user_id });
   }
 
   async findReading(user_id: string, book_id: string){

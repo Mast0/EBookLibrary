@@ -54,6 +54,20 @@
                 "${workspaceFolder}/back/book-service/dist/**/*.js",
                 "!**/node_modules/**"
             ]
+        },
+        {
+            "name": "ReadingService Debug",
+            "type": "node",
+            "request": "attach",
+            "port": 9229,
+            "sourceMaps": true,
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "outFiles": [
+                "${workspaceFolder}/back/reading-service/dist/**/*.js",
+                "!**/node_modules/**"
+            ]
         }
     ]
 }

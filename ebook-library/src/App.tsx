@@ -6,10 +6,10 @@ import BookList from './components/BookList';
 import CreateBook from './components/CreateBook';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from './components/Navbar';
-import Logout from './components/Logout';
 import { AuthProvider } from './contexts/AuthContext';
 import PdfReader from './components/PdfReader';
 import BookDetails from './components/BookDetails';
+import NotFound from './components/NotFound';
 
 
 function App() {
@@ -22,9 +22,9 @@ function App() {
           <Route path='/register' element={<Register />} />
           <Route path='/' element={<BookList />} />
           <Route path="/create-book" element={<CreateBook />} />
-          <Route path="/logout" element={<Logout />} />
           <Route path='/read/:id' element={<PdfReader /> }/>
           <Route path="/book-details" element={<BookDetails />} />
+          <Route path='*' element={<NotFound />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>

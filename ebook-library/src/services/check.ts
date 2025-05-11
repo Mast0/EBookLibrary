@@ -1,12 +1,8 @@
-import { rejects } from "assert";
 import { getRole } from "./api";
-import { time } from "console";
 
 interface Role {
     name: string;
-    permissions: {
-      permissions: string[];
-    };
+    permissions: string[];
   };
 
 export const checkPermissions = async (permission: string): Promise<boolean> => {
@@ -23,10 +19,10 @@ export const checkPermissions = async (permission: string): Promise<boolean> => 
         timeout
       ]);
       console.log(role);
-      return role.permissions.permissions.includes(permission);
+      return role.permissions.includes(permission);
     } catch (err) {
       console.error(err);
-      alert('You are not authorized!');
+      //alert('You are not authorized!');
       return false;
     }
   };

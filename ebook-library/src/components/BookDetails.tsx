@@ -1,5 +1,4 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { checkPermissions } from "../services/check";
 import ThemeToggle from "./ThemeToggle";
 import "../styles/BookDetails.css";
 import { Link } from "react-router-dom";

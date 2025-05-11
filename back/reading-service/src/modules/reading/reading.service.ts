@@ -50,7 +50,7 @@ export class ReadingService {
   }
 
   async getAllReadings(user_id: string) {
-    return await this.readingRepository.findBy({ user_id });
+    return await this.readingRepository.findBy({ user_id: user_id });
   }
 
   async getReading(user_id: string, book_id: string){

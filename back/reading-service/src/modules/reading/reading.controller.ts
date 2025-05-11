@@ -16,7 +16,7 @@ export class ReadingController {
     return await this.readingService.createReading(dto);
   }
 
-  @MessagePattern(patterns.READING.FIND_ALL)
+  @MessagePattern(patterns.READING.FIND_USER_ALL)
   async findReadings(data: { user_id: string }) {
     this.logger.log('Finding readings');
     return await this.readingService.getAllReadings(data.user_id);

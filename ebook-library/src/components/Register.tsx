@@ -14,7 +14,7 @@ const Register = () => {
   const handleRegister = async () => {
     try {
       await register(username, email, password, role);
-      navigate("/");
+      navigate("/login");
     } catch (error) {
       console.error("Register error", error);
       alert("Register Failed");

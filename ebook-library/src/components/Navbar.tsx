@@ -11,8 +11,11 @@ const Navbar = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
+    localStorage.removeItem("userEmail");
     logout();
-    navigate("/");
+
+    if (window.location.pathname === '/') window.location.reload();
+    else navigate("/");
   };
 
   return (

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getBooks, getReadings, getUserByEmail } from "../services/api";
 import '../styles/BookList.css';
 import ThemeToggle from "./ThemeToggle";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 interface Book {
   id: string
@@ -25,6 +25,8 @@ const BookList = () => {
   const [books, setBooks] = useState<Book[]>([]);
   const [readingBooks, setReadingBooks] = useState<{book: Book, reading: Reading}[]>([]);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     const fetchBooks = async () => {
       try {
@@ -34,19 +36,23 @@ const BookList = () => {
         const email = localStorage.getItem('userEmail');
         if (!email) return;
 
-        const user = await getUserByEmail(email);
-        const readingsData = await getReadings(user.id);
+        try {
+          const user = await getUserByEmail(email);
+          const readingsData = await getReadings(user.id);
 
-        const readingBookIds = readingsData.map((r: Reading) => r.book_id);
+          const readingBookIds = readingsData.map((r: Reading) => r.book_id);
 
-        const readingBookPairs = data
-        .filter((book: Book) => readingBookIds.includes(String(book.id).trim()))
-        .map((book: Book) => {
-          const reading = readingsData.find((r: Reading) => String(r.book_id).trim() === String(book.id).trim());
-          return {book, reading};
-        });
+          const readingBookPairs = data
+          .filter((book: Book) => readingBookIds.includes(String(book.id).trim()))
+          .map((book: Book) => {
+            const reading = readingsData.find((r: Reading) => String(r.book_id).trim() === String(book.id).trim());
+            return {book, reading};
+          });
 
-        setReadingBooks(readingBookPairs);
+          setReadingBooks(readingBookPairs);
+        } catch (error) {
+          navigate('/login');
+        }
       } catch (error) {
         console.error("Load books error", error);
         alert("Failed to load books");

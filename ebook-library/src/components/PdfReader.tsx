@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { Document, Page, pdfjs } from "react-pdf";
-import { useEffect, useState, } from "react";
+import { useEffect, useMemo, useState, } from "react";
 import { createReading, getBookPdf, getReading, getUserByEmail, updateReading } from "../services/api";
 import { checkPermissions } from "../services/check";
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
@@ -11,11 +11,6 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   'pdfjs-dist/build/pdf.worker.min.mjs',
   import.meta.url,
 ).toString();
-
-const options = {
-    cMapUrl: '/cmaps/',
-    standardFontDataUrl: '/standard_fonts/',
-};
 
 const MAX_RETRIES = 5;
 
@@ -35,6 +30,11 @@ const PdfReader = () => {
     const [userId, setUserId] = useState<string | null>(null);
     const [isReady, setIsready] = useState(false);
 
+    const options = useMemo(() => ({
+        cMapUrl: '/cmaps/',
+        standardFontDataUrl: '/standard_fonts/',
+    }), []);
+
     const navigate = useNavigate();
 
     const fetchPdf = async (attempt = 1) => {
@@ -49,7 +49,7 @@ const PdfReader = () => {
         );
 
         setNumPages(null);
-        setPageNumber(0);
+        setPageNumber(1);
         setFile(null);
   
         const blobUrl = await Promise.race([getBookPdf(id), timeout]);
@@ -66,28 +66,28 @@ const PdfReader = () => {
         }
       }
     };
-    
-    const init = async () => {
-      try{
-        const email = localStorage.getItem('userEmail');
-        if (!email || !id) return;
-
-        const user = await getUserByEmail(email);
-        setUserId(user.id);
-
-        const reading: Reading = await getReading(user.id, id);
-        setPageNumber(reading.current_page || 1);
-      } catch(error){
-        console.log("No previous reading progress or error:", error);
-        setPageNumber(1);
-      } finally {
-        setIsready(true);
-      }
-
-      await fetchPdf(); 
-    };
 
     useEffect(() => {
+      const init = async () => {
+        try{
+          const email = localStorage.getItem('userEmail');
+          if (!email || !id) return;
+
+          const user = await getUserByEmail(email);
+          setUserId(user.id);
+
+          const reading: Reading = await getReading(user.id, id);
+          setPageNumber(reading.current_page || 1);
+        } catch(error){
+          console.log("No previous reading progress or error:", error);
+          setPageNumber(1);
+        } finally {
+          setIsready(true);
+        }
+
+        await fetchPdf(); 
+      };
+      
         init();
     }, [id]);
 
@@ -106,7 +106,7 @@ const PdfReader = () => {
         };
       }
         saveProgress();
-    }, [pageNumber]);
+    }, [pageNumber, id, userId, isReady]);
 
     useEffect(() => {
         const verifyPermission = async () => {
@@ -152,12 +152,13 @@ const PdfReader = () => {
             <>
               <div className="page-clickable-area" onClick={handlePageClick}>
                 <Document
+                  key={file}
                   file={file}
                   options={options}
                   onLoadSuccess={onDocumentLoadSuccess}
                   onLoadError={onDocumentLoadError}
                 >
-                  {numPages !== null && (
+                  {numPages && (
                     <Page pageNumber={pageNumber} />
                   )}
                 </Document>

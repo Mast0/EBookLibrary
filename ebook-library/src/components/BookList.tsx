@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { getBooks, getReadings, getUserByEmail } from "../services/api";
 import '../styles/BookList.css';
 import ThemeToggle from "./ThemeToggle";
@@ -24,6 +24,10 @@ interface Reading {
 const BookList = () => {
   const [books, setBooks] = useState<Book[]>([]);
   const [readingBooks, setReadingBooks] = useState<{book: Book, reading: Reading}[]>([]);
+  const [selectedAuthor, setSelectedAuthor] = useState<string>('All');
+  const [selectedGenre, setSelectedGenre] = useState<string>('All');
+  const [authors, setAuthors] = useState<string[]>([]);
+  const [genres, setGenres] = useState<string[]>([]);
 
   const navigate = useNavigate();
 
@@ -32,6 +36,12 @@ const BookList = () => {
       try {
         const data = await getBooks();
         setBooks(data);
+
+        const uniqueAuthors: string[] = Array.from(new Set(data.map((book: Book) => book.author)));
+        const uniqueGenres: string[] = Array.from(new Set(data.map((book: Book) => book.genre)));
+
+        setAuthors(uniqueAuthors);
+        setGenres(uniqueGenres);
 
         const email = localStorage.getItem('userEmail');
         if (!email) return;
@@ -122,15 +132,57 @@ const BookList = () => {
       <div className="container mt-4">
         <h2 className="mb-4">Books</h2>
         <div className="mb-3">
-          <Link 
-            to={"/create-book"}
-            className="btn btn-primary"
-          >
-            Add New Book
-          </Link>
+          <div className="row g-2 align-items-end mb-3 flex-wrap">
+            <div className="col-md-4 col-sm-6">
+              <label className="form-label">Filter By Author:</label>
+              <select
+                className="form-select"
+                value={selectedAuthor}
+                onChange={(e) => setSelectedAuthor(e.target.value)}
+              >
+                <option value='All'>All</option>
+                {authors.map((author) => (
+                  <option key={author} value={author}>{author}</option>
+                ))}
+              </select>
+            </div>
+            <div className="col-md-4 col-sm-6">
+              <label className="form-label">Filter By Genre:</label>
+              <select
+                className="form-select"
+                value={selectedGenre}
+                onChange={(e) => setSelectedGenre(e.target.value)}
+              >
+                <option value='All'>All</option>
+                {genres.map((genre) => (
+                  <option key={genre} value={genre}>{genre}</option>
+                ))}
+              </select>
+            </div>
+            <div className="col-md-4 d-flex gap-2">
+                <button
+                className="btn btn-outline-secondary"
+                onClick={() => {
+                  setSelectedAuthor('All');
+                  setSelectedGenre('All');
+                }}
+              >Clear Filters</button>
+              <Link 
+                to={"/create-book"}
+                className="btn btn-primary"
+              >
+                Add New Book
+              </Link>
+            </div>
+          </div>
         </div>
         <div className="book-scroll">
-          {books.map((book, index) => (
+          {books
+          .filter(book => 
+            (selectedAuthor === 'All' || book.author === selectedAuthor) &&
+            (selectedGenre === 'All' || book.genre === selectedGenre)
+          )
+          .map((book, index) => (
             <div key={index} className="card book-card">
               <div className="book-image-placeholder bg-secondary">
                 <i className="bi bi-book"></i>

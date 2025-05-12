@@ -49,7 +49,6 @@ const PdfReader = () => {
         );
 
         setNumPages(null);
-        setPageNumber(1);
         setFile(null);
   
         const blobUrl = await Promise.race([getBookPdf(id), timeout]);

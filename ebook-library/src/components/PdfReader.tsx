@@ -117,6 +117,19 @@ const PdfReader = () => {
         verifyPermission();
       }, [navigate]);
 
+    useEffect(() => {
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'ArrowLeft') {
+          setPageNumber((prev) => Math.max(prev - 1, 1));
+        } else if (e.key === 'ArrowRight') {
+          setPageNumber((prev) => (numPages && prev < numPages ? prev + 1 : prev));
+        }
+      };
+
+      window.addEventListener('keydown', handleKeyDown);
+      return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [numPages]);
+
     const onDocumentLoadSuccess = ({numPages}: {numPages: number}) => {
         setNumPages(numPages);
         if (pageNumber > numPages) {

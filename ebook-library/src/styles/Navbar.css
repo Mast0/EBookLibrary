@@ -7,7 +7,8 @@
   color: #fff;
 }
 
-.navbar-buttons {
+.navbar-left,
+.navbar-right {
   display: flex;
   gap: 12px;
   align-items: center;

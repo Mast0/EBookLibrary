@@ -20,7 +20,7 @@ const Navbar = () => {
 
   return (
     <nav className="navbar">
-      <div className="navbar-buttons">
+      <div className="navbar-left">
         <Link to="/" className="icon-home">
           <FaHome />
         </Link>
@@ -32,6 +32,8 @@ const Navbar = () => {
             <Link to="/register" className="navbar-link">Register</Link>
           </>
         )}
+      </div>
+      <div className="navbar-right">
         <ThemeToggle />
       </div>
     </nav>

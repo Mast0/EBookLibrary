@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { register } from "../services/api";
 import "../styles/FormPage.css";
-import ThemeToggle from "./ThemeToggle";
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -23,7 +22,6 @@ const Register = () => {
 
   return (
     <>
-    <ThemeToggle />
       <div className="form-container">
         <h2>Register</h2>
         <input 

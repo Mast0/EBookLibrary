@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createBook, getRole } from "../services/api";
 import "../styles/FormPage.css";
-import ThemeToggle from "./ThemeToggle";
 import { checkPermissions } from "../services/check";
 
 const CreateBook = () => {
@@ -61,7 +60,6 @@ const CreateBook = () => {
 
   return (
     <>
-     <ThemeToggle />
       <div className="form-container">
         <h2>Create New Book</h2>
         <form onSubmit={handleSubmit}>

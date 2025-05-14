@@ -1,7 +1,6 @@
 import { use, useEffect, useState } from "react";
 import { getBooks, getReadings, getUserByEmail } from "../services/api";
 import '../styles/BookList.css';
-import ThemeToggle from "./ThemeToggle";
 import { Link, useNavigate } from "react-router-dom";
 
 interface Book {
@@ -73,7 +72,6 @@ const BookList = () => {
 
   return (
     <>
-      <ThemeToggle />
       { readingBooks.length > 0 && (<div className="container mt-4">
         <h2 className="mb-4">Continue Reading</h2>
         <div className="book-scroll">

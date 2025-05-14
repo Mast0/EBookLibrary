@@ -1,5 +1,4 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import ThemeToggle from "./ThemeToggle";
 import "../styles/BookDetails.css";
 import { Link } from "react-router-dom";
 
@@ -28,7 +27,6 @@ const BookDetails = () => {
 
   return (
     <>
-      <ThemeToggle />
       <div className="book-details-container">
         <h2>{book.title}</h2>
         <p><strong>Author:</strong> {book.author}</p>

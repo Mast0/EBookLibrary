@@ -1,0 +1,30 @@
+.theme-toggle-btn {
+  margin: 0;
+  padding: 0;
+  height: 40px;
+  width: 40px;
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.theme-toggle-btn svg {
+  height: 2rem;
+  width: 2rem;
+  display: block;
+}
+
+.theme-toggle-btn:hover {
+    background: transparent;
+}
+
+body.dark .theme-toggle-btn {
+    background: transparent;
+}
+
+body.dark .theme-toggle-btn:hover {
+    background: transparent;
+}

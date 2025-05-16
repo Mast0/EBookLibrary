@@ -24,6 +24,7 @@ const PdfReader = () => {
     const { id } = useParams<{ id: string }>();
     const [numPages, setNumPages] = useState<number | null>(null);
     const [pageNumber, setPageNumber] = useState(1);
+    const [maxPage, setMaxPage] = useState(1);
     const [file, setFile] = useState<string | null>(null);
     const [retryCount, setRetryCount] = useState(0);
     const [error, setError] = useState<string | null>(null);
@@ -76,9 +77,11 @@ const PdfReader = () => {
           setUserId(user.id);
 
           const reading: Reading = await getReading(user.id, id);
+          setMaxPage(reading.current_page || 1);
           setPageNumber(reading.current_page || 1);
         } catch(error){
           console.log("No previous reading progress or error:", error);
+          setMaxPage(1);
           setPageNumber(1);
         } finally {
           setIsready(true);
@@ -95,17 +98,17 @@ const PdfReader = () => {
 
       const saveProgress = async () => {
         try{
-          await updateReading(userId, id, pageNumber);
+          await updateReading(userId, id, maxPage);
         } catch (err) {
           try{
-            await createReading(userId, id, pageNumber);
+            await createReading(userId, id, maxPage);
           } catch (e) {
             console.error("Failed to save reading progress:", e);
           }
         };
       }
         saveProgress();
-    }, [pageNumber, id, userId, isReady]);
+    }, [maxPage, id, userId, isReady]);
 
     useEffect(() => {
         const verifyPermission = async () => {
@@ -122,6 +125,7 @@ const PdfReader = () => {
           setPageNumber((prev) => Math.max(prev - 1, 1));
         } else if (e.key === 'ArrowRight') {
           setPageNumber((prev) => (numPages && prev < numPages ? prev + 1 : prev));
+          setMaxPage((prev) => (numPages && prev < numPages && prev >= pageNumber? prev + 1 : prev));
         }
       };
 
@@ -133,6 +137,7 @@ const PdfReader = () => {
         setNumPages(numPages);
         if (pageNumber > numPages) {
           setPageNumber(1);
+          setMaxPage(1);
         }
     };
 
@@ -154,6 +159,7 @@ const PdfReader = () => {
           setPageNumber((prev) => Math.max(prev - 1, 1));
         } else {
           setPageNumber((prev) => (numPages && prev < numPages ? prev + 1 : prev));
+          setMaxPage((prev) => (numPages && prev < numPages && prev >= pageNumber? prev + 1 : prev));
         }
       };
       
@@ -179,7 +185,10 @@ const PdfReader = () => {
               <div className="controls">
                 <button onClick={() => setPageNumber(p => Math.max(p - 1, 1))} disabled={pageNumber <= 1}>←</button>
                 <span>Page {pageNumber} of {numPages}</span>
-                <button onClick={() => setPageNumber(p => (numPages && p < numPages ? p + 1 : p))} disabled={pageNumber === numPages}>→</button>
+                <button onClick={() => {
+                  setPageNumber(p => (numPages && p < numPages ? p + 1 : p))
+                  setMaxPage((prev) => (numPages && prev < numPages && prev >= pageNumber? prev + 1 : prev));
+                }} disabled={pageNumber === numPages}>→</button>
               </div>
             </>
           ) : (

@@ -43,9 +43,11 @@ const CreateBook = () => {
 
       await createBook(formData);
       navigate("/");
-    } catch (error) {
+    } catch (error: any) {
       console.error("Create book error", error);
-      alert("Failed to create book");
+      if (error.response.data.message != null)
+        alert(`Failed to create book. ${error.response.data.message}`);
+      else alert(`Failed to create book.`);
     }
   };
 

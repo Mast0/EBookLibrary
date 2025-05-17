@@ -17,9 +17,9 @@ const Login = () => {
       localStorage.setItem("userEmail", email);
       authLogin();
       navigate("/");
-    } catch (error) {
+    } catch (error: any) {
       console.error("Login error", error);
-      alert("Login Failed");
+      alert(`Login Failed. ${error.response.data.message}.`);
     }
   };
 

@@ -1,94 +1,126 @@
-.not-found-container {
-  text-align: center;
-  padding: 4rem 1rem;
-  color: #222;
-  background-color: #f9f9f9;
-  min-height: 80vh;
+.not-found-wrapper {
+  display: flex;
+  height: 93vh;
+  width: 100%;
+}
+
+.not-found-left {
+  position: relative;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  justify-content: space-between; 
+  align-items: stretch;
+  padding: 20px;
+  overflow: hidden;
 }
 
 .not-found-title {
-  font-size: 6rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scaleY(1.2);
+  font-size: 310px;
+  color: #ada9ba57;
   font-weight: bold;
-  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  z-index: 0;
+  pointer-events: none;
+  letter-spacing: 20px;
+
 }
 
 .not-found-message {
-  font-size: 1.25rem;
-  margin-bottom: 2rem;
+  z-index: 1;
+  text-align: left;
+  font-size: 26px;
+  margin-top: 20px;
+  color: #e5e6ee;
+}
+
+.not-found-message h1 {
+  margin-bottom: 60px;
+  color: #cdcee4;
+  transform: scaleY(1.1);
+  font-size: 80px;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-align: left;
+}
+.not-found-image-text{
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%) scaleY(1.2);
+  font-size: 100px;
+  color: #ada9ba79;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 20px;
+  text-align: center;
+  width: 100%;
+  padding-bottom: 10px;
 }
 
 .not-found-button {
-  font-size: 1rem;
-  padding: 0.5rem 1.5rem;
+  z-index: 1;
+  align-self: flex-start;
+  font-size: 20px;
+  border-radius: 10px;
+  color: #cdcee4;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 15px 20px;
+  margin-bottom: 30px;
+  margin-left: 20px;
+  border: 1px solid #cdcee480;
 }
 
-.not-found-icon {
+
+
+.not-found-card {
   position: relative;
-  width: 4rem;
-  height: 4rem;
-  margin-bottom: 1rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #14141f;
+  border-radius: 25px;
+  margin: 25px;
+  overflow: hidden; 
+  box-shadow:  0 1px 3px #ada9ba4c;
 }
 
-.book {
-  position: absolute;
-  font-size: 4rem;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  text-align: center;
-  line-height: 4rem;
-  transform-origin: center;
+.not-found-card img {
+  height: 100%;
+  object-fit: contain; 
 }
 
-.book-open {
-  animation: closeBookOut 1s ease-in-out forwards;
+.not-found-left {
+  animation: slideInFromLeft 3s ease forwards;
 }
 
-.book-closed {
-  opacity: 0;
-  animation: closeBookIn 1s ease-in-out forwards;
-  animation-delay: 0.5s;
+.not-found-right {
+  position: relative;
 }
 
-@keyframes closeBookOut {
-  0% {
-    transform: scale(1) rotateY(0deg);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(0.8) rotateY(90deg);
-    opacity: 0;
-  }
+.not-found-image {
+  opacity: 0; 
+  animation: fadeIn 3.5s ease forwards;
 }
 
-@keyframes closeBookIn {
-  0% {
-    transform: scale(0.8) rotateY(-90deg);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(1) rotateY(0deg);
+@keyframes fadeIn {
+  to {
     opacity: 1;
   }
 }
 
-/* Dark theme */
-body.dark .not-found-container{
-  background-color: #121212;
-  color: #f1f1f1;
-}
-
-body.dark .not-found-button {
-  border-color: #f1f1f1;
-  color: #f1f1f1;
-}
-
-body.dark .not-found-button:hover {
-  background-color: #f1f1f1;
-  color: #121212;
+@keyframes slideInFromLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-100px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }

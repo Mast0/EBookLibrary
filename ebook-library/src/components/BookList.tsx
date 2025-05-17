@@ -1,7 +1,8 @@
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getBooks, getReadings, getUserByEmail } from "../services/api";
 import '../styles/BookList.css';
 import { Link, useNavigate } from "react-router-dom";
+import { checkPermissions } from "../services/check";
 
 interface Book {
   id: string
@@ -27,6 +28,7 @@ const BookList = () => {
   const [selectedGenre, setSelectedGenre] = useState<string>('All');
   const [authors, setAuthors] = useState<string[]>([]);
   const [genres, setGenres] = useState<string[]>([]);
+  const [hasCreatePermission, setHasCreatePermission] = useState(false);
 
   const navigate = useNavigate();
 
@@ -60,15 +62,22 @@ const BookList = () => {
 
           setReadingBooks(readingBookPairs);
         } catch (error) {
-          navigate('/login');
+          console.error("Load books error", error);
         }
       } catch (error) {
         console.error("Load books error", error);
-        alert("Failed to load books");
       }
     };
     fetchBooks();
   }, []);
+
+  useEffect(() => {
+          const verifyPermission = async () => {
+            const hasPermission = await checkPermissions('create');
+            setHasCreatePermission(hasPermission);
+          };
+          verifyPermission();
+        }, [navigate]);
 
   return (
     <>
@@ -165,12 +174,14 @@ const BookList = () => {
                   setSelectedGenre('All');
                 }}
               >Clear Filters</button>
-              <Link 
-                to={"/create-book"}
-                className="btn btn-primary"
-              >
-                Add New Book
-              </Link>
+              {hasCreatePermission && (
+                <Link 
+                  to={"/create-book"}
+                  className="btn btn-primary"
+                >
+                  Add New Book
+                </Link>
+              )}
             </div>
           </div>
         </div>

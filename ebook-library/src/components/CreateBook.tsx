@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { createBook, getRole } from "../services/api";
+import { createBook } from "../services/api";
 import "../styles/FormPage.css";
 import { checkPermissions } from "../services/check";
 

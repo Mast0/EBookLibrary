@@ -112,9 +112,9 @@ const PdfReader = () => {
 
     useEffect(() => {
         const verifyPermission = async () => {
-          const hasPermission = await checkPermissions('create');
+          const hasPermission = await checkPermissions('read');
           if (!hasPermission)
-            navigate('/not-found', { replace: true });
+            navigate('/login', { replace: true });
         };
         verifyPermission();
       }, [navigate]);

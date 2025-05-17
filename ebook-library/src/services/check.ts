@@ -22,7 +22,6 @@ export const checkPermissions = async (permission: string): Promise<boolean> => 
       return role.permissions.includes(permission);
     } catch (err) {
       console.error(err);
-      //alert('You are not authorized!');
       return false;
     }
   };

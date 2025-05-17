@@ -72,12 +72,12 @@ const BookList = () => {
   }, []);
 
   useEffect(() => {
-          const verifyPermission = async () => {
-            const hasPermission = await checkPermissions('create');
-            setHasCreatePermission(hasPermission);
-          };
-          verifyPermission();
-        }, [navigate]);
+    const verifyPermission = async () => {
+      const hasPermission = await checkPermissions('create');
+      setHasCreatePermission(hasPermission);
+    };
+    verifyPermission();
+  }, [navigate]);
 
   return (
     <>

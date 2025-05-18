@@ -3,8 +3,9 @@
   justify-content: space-between;
   align-items: center;
   padding: 12px 24px;
-  background-color: #007bff;
+  background-color: #28293d;
   color: #fff;
+  box-shadow:  0 2px 5px #ada9ba57;
 }
 
 .navbar-left,
@@ -14,65 +15,40 @@
   align-items: center;
 }
 
-.navbar-link {
-  padding: 6px 12px;
-  background-color: #fff;
-  color: #007bff;
-  border-radius: 6px;
+.navbar-item {
+  color: #cdcee4;
+  text-transform: uppercase;
   text-decoration: none;
-  font-weight: bold;
-}
-
-.navbar-button {
-  padding: 6px 12px;
-  background-color: #fff;
-  color: #007bff;
-  border-radius: 6px;
-  font-weight: bold;
+  letter-spacing: 0.15em;
+  display: inline-block;
+  padding: 15px 20px;
+  position: relative;
+  background: none;
   border: none;
+  font: inherit;
   cursor: pointer;
 }
 
-.navbar-button:hover {
-    background-color: #e2e6ea;
-    text-decoration: none;
+.navbar-item::after {
+  content: "";
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 2px;
+  width: 0;
+  background-color: #ada9ba;
+  transition: width 0.3s ease;
 }
 
-body.dark .navbar-button {
-  background-color: #fff;
-  color: #007bff;
+.navbar-item:hover::after {
+  width: 100%;
 }
 
-body.dark .navbar-button:hover {
+body.dark .navbar-item {
+  color: #cdcee4;
+}
+
+body.dark .navbar-item:hover::after {
   background-color: #e2e6ea;
-  color: #007bff;
-}
-
-.icon-home {
-  padding: 6px 12px;
-  color: #fff;
-  text-decoration: none;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  height: 100%;
-  cursor: pointer;
-  font-size: 1.4rem;
-  background: transparent;
-  border: none;
-}
-
-.icon-home:hover {
-  background: transparent;
-  color: #fff;
-  text-decoration: none;
-}
-
-body.dark .icon-home {
-  color: #fff;
-}
-
-body.dark .icon-home:hover {
-  background: transparent;
-  color: #fff;
 }

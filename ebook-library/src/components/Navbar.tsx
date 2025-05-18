@@ -3,7 +3,6 @@ import { useAuth } from "../contexts/AuthContext";
 import ThemeToggle from "./ThemeToggle";
 import "../styles/Navbar.css";
 import "../styles/FormPage.css"
-import { FaHome } from 'react-icons/fa'; 
 
 const Navbar = () => {
   const { isAuthenticated, logout } = useAuth();
@@ -21,15 +20,13 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="navbar-left">
-        <Link to="/" className="icon-home">
-          <FaHome />
-        </Link>
+      <Link to="/" className="navbar-item">Home</Link>
         {isAuthenticated ? (
-          <button onClick={handleLogout} className="navbar-button">Logout</button>
+          <button onClick={handleLogout} className="navbar-item">Logout</button>
         ) : (
           <>
-            <Link to="/login" className="navbar-link">Login</Link>
-            <Link to="/register" className="navbar-link">Register</Link>
+            <Link to="/login" className="navbar-item">Login</Link>
+            <Link to="/register" className="navbar-item">Register</Link>
           </>
         )}
       </div>

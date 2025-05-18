@@ -10,6 +10,7 @@ const CreateBook = () => {
   const [genre, setGenre] = useState("");
   const [description, setDescription] = useState("");
   const [publication_year, setYear] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [file, setFile] = useState<File | null>(null);
 
   const navigate = useNavigate();
@@ -46,8 +47,8 @@ const CreateBook = () => {
     } catch (error: any) {
       console.error("Create book error", error);
       if (error.response.data.message != null)
-        alert(`Failed to create book. ${error.response.data.message}`);
-      else alert(`Failed to create book.`);
+        setErrorMessage(error.response.data.message);
+      else setErrorMessage("Failed to create book.")
     }
   };
 
@@ -106,6 +107,7 @@ const CreateBook = () => {
             onChange={handleFileChange}
             required
           />
+          {errorMessage && <div className="error-message">{errorMessage}</div>}
           <button type="submit">Create Book</button>
         </form>
       </div>

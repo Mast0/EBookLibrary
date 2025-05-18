@@ -8,6 +8,7 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
   const handleRegister = async () => {
@@ -16,7 +17,7 @@ const Register = () => {
       navigate("/login");
     } catch (error: any) {
       console.error("Register error", error);
-      alert(`Register Failed. ${error.response.data.message}`);
+      setErrorMessage(error.response.data.message);
     }
   };
 
@@ -46,6 +47,7 @@ const Register = () => {
           <option value="admin">Admin</option>
           <option value="user">User</option>
         </select>
+        {errorMessage && <div className="error-message">{errorMessage}</div>}
         <button onClick={handleRegister}>Register</button>
       </div>
     </>

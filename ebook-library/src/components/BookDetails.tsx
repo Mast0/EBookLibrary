@@ -35,7 +35,7 @@ const BookDetails = () => {
         <p><strong>Description:</strong> {book.description}</p>
         <Link
             to={`/read/${book.id}`}
-            className="btn btn-sm btn-outline-primary flex-grow-1 me-2"
+            className="btn btn-sm flex-grow-1 me-2 custom-read-button"
           >
             Read
           </Link>

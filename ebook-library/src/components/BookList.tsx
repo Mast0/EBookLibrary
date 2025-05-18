@@ -110,7 +110,7 @@ const BookList = () => {
                 <div className="mt-auto d-flex justify-content-between">
                   <Link
                     to={`/read/${book.id}`}
-                    className="btn btn-sm btn-outline-success flex-grow-1 me-2 w-100"
+                    className="btn btn-sm btn-outline-secondary flex-grow-1 me-2"
                   >
                     Resume
                   </Link>
@@ -129,52 +129,9 @@ const BookList = () => {
       </div>)}
       <div className="container mt-4">
         <h2 className="mb-4">Books</h2>
-        <div className="mb-3">
-          <div className="row g-2 align-items-end mb-3 flex-wrap">
-            <div className="col-md-4 col-sm-6">
-              <label className="form-label">Filter By Author:</label>
-              <select
-                className="form-select"
-                value={selectedAuthor}
-                onChange={(e) => setSelectedAuthor(e.target.value)}
-              >
-                <option value='All'>All</option>
-                {authors.map((author) => (
-                  <option key={author} value={author}>{author}</option>
-                ))}
-              </select>
-            </div>
-            <div className="col-md-4 col-sm-6">
-              <label className="form-label">Filter By Genre:</label>
-              <select
-                className="form-select"
-                value={selectedGenre}
-                onChange={(e) => setSelectedGenre(e.target.value)}
-              >
-                <option value='All'>All</option>
-                {genres.map((genre) => (
-                  <option key={genre} value={genre}>{genre}</option>
-                ))}
-              </select>
-            </div>
-            <div className="col-md-4 d-flex gap-2">
-                <button
-                className="btn btn-outline-secondary"
-                onClick={() => {
-                  setSelectedAuthor('All');
-                  setSelectedGenre('All');
-                }}
-              >Clear Filters</button>
-              <Link 
-                to={"/create-book"}
-                className="btn btn-primary"
-              >
-                Add New Book
-              </Link>
-            </div>
-          </div>
-        </div>
-        <div className="book-scroll">
+        <div className="left-and-right">
+        <div className="book-scroll-wrapper book-scroll-wrapper-left">
+        <div className="book-scroll"> 
           {books
           .filter(book => 
             (selectedAuthor === 'All' || book.author === selectedAuthor) &&
@@ -197,7 +154,7 @@ const BookList = () => {
                 <div className="mt-auto d-flex justify-content-between">
                   <Link
                     to={`/read/${book.id}`}
-                    className="btn btn-sm btn-outline-primary flex-grow-1 me-2"
+                    className="btn btn-sm btn-outline-secondary flex-grow-1 me-2"
                   >
                     Read
                   </Link>
@@ -213,6 +170,57 @@ const BookList = () => {
             </div>
           ))}
         </div>
+        </div>
+        <div className="right-column">
+        <div className="form-container-right">
+          <div className="d-flex flex-column gap-3 mb-3">
+            <div>
+              <label className="form-label">Filter By Author:</label>
+              <select
+                className="form-select"
+                value={selectedAuthor}
+                onChange={(e) => setSelectedAuthor(e.target.value)}
+              >
+                <option value="All">All</option>
+                {authors.map((author) => (
+                <option key={author} value={author}>{author}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="form-label">Filter By Genre:</label>
+              <select
+              className="form-select"
+              value={selectedGenre}
+              onChange={(e) => setSelectedGenre(e.target.value)}
+            >
+              <option value="All">All</option>
+              {genres.map((genre) => (
+                <option key={genre} value={genre}>{genre}</option>
+              ))}
+            </select>
+          </div>
+          <div className="d-flex flex-column flex-sm-row gap-2">
+            <button
+              className="btn btn-outline-secondary"
+              onClick={() => {
+                setSelectedAuthor('All');
+                setSelectedGenre('All');
+              }}
+            >
+              Clear Filters
+            </button>
+          </div>
+        </div>
+      </div>
+      <Link 
+        to="/create-book"
+        className="add-button"
+      >
+        Add New Book
+      </Link>
+      </div>
+      </div>
       </div>
     </>
   );

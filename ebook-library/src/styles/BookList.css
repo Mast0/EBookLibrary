@@ -1,9 +1,18 @@
+.book-scroll-wrapper {
+    flex: 1;  
+    max-width: 1000px;
+    align-self: flex-start;
+}
+
 .book-scroll {
-    display: flex;
-    overflow-x: auto;
-    padding-bottom: 1rem;
-    scroll-snap-type: x mandatory;
-    gap: 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    overflow-y: auto;
+    max-height: auto; 
+    padding-right: 0.5rem;
+    column-gap: 1rem; 
+    row-gap: 2rem; 
+    padding: 0 0 20px 8px;
 }
 
 .book-scroll::-webkit-scrollbar {
@@ -16,11 +25,48 @@
 }
 
 .book-card {
-    flex-shrink: 0;
     width: 200px;
     min-width: 200px;
     scroll-snap-align: start;
     box-shadow:  0 2px 5px rgba(0, 0, 0, 0.284);
+}
+  
+.left-and-right {
+    display: flex;
+    align-items: flex-start; 
+    gap: 2rem;         
+    padding: 1rem;
+  }
+
+.form-container-right {
+    flex-shrink: 0;     
+    width: 330px;
+    padding: 2rem;
+    background-color: #28293d;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    display: flex;
+  flex-direction: column;
+}
+  
+.add-button {
+    text-decoration: none;
+    padding: 12px;
+    color: white;
+    border-radius: 8px;
+    border: 1px solid #cdcee480;
+    font-size: 16px;
+    cursor: pointer;
+    width: 330px;       
+    text-align: center;
+    margin-top:20px;
+}
+
+.right-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    gap: 1rem;      
 }
 
 .book-image-placeholder {
@@ -73,9 +119,9 @@
 
 /* Dark theme */
 body.dark .book-card {
-    background-color: #1e1e1e;
+    background-color: #28293d; 
     color: #f1f1f1;
-    box-shadow:  0 2px 5px rgba(255, 255, 255, 0.216);
+    box-shadow:  0 2px 5px #ada9ba57; 
 }
 
 body.dark .book-image-placeholder {
@@ -91,3 +137,7 @@ body.dark .progress-bar {
     background-color: #34c759;
     color: #000;
 }
+
+.book-scroll-wrapper-left {
+    flex: 1;
+  }

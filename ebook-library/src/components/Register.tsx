@@ -12,6 +12,13 @@ const Register = () => {
   const navigate = useNavigate();
 
   const handleRegister = async () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(email)) {
+      setErrorMessage("Please enter a valid email address.");
+      return;
+    }
+    
     try {
       await register(username, email, password, role);
       navigate("/login");

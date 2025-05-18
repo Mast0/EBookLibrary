@@ -55,6 +55,17 @@
     text-decoration: underline;
 }
 
+.error-message {
+    color: red;
+    margin: 0;
+    margin-bottom: 0.3rem;
+    padding: 0;
+    font-size: 0.9rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 body.dark {
     background-color: #1c1c27;
     color: #f1f1f1;

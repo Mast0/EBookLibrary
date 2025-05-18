@@ -7,8 +7,10 @@ import { useAuth } from "../contexts/AuthContext";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState("")
   const { login: authLogin } = useAuth();
+
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
     try {
@@ -17,9 +19,9 @@ const Login = () => {
       localStorage.setItem("userEmail", email);
       authLogin();
       navigate("/");
-    } catch (error) {
+    } catch (error: any) {
       console.error("Login error", error);
-      alert("Login Failed");
+      setErrorMessage(error.response.data.message);
     }
   };
 
@@ -38,6 +40,7 @@ const Login = () => {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
+      {errorMessage && <div className="error-message">{errorMessage}</div>}
       <button onClick={handleLogin}>Login</button>
       <a href="/register">Register</a>
     </div>

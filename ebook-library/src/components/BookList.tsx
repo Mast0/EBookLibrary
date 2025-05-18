@@ -1,7 +1,8 @@
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getBooks, getReadings, getUserByEmail } from "../services/api";
 import '../styles/BookList.css';
 import { Link, useNavigate } from "react-router-dom";
+import { checkPermissions } from "../services/check";
 
 interface Book {
   id: string
@@ -27,6 +28,7 @@ const BookList = () => {
   const [selectedGenre, setSelectedGenre] = useState<string>('All');
   const [authors, setAuthors] = useState<string[]>([]);
   const [genres, setGenres] = useState<string[]>([]);
+  const [hasCreatePermission, setHasCreatePermission] = useState(false);
 
   const navigate = useNavigate();
 
@@ -60,15 +62,22 @@ const BookList = () => {
 
           setReadingBooks(readingBookPairs);
         } catch (error) {
-          navigate('/login');
+          console.error("Load books error", error);
         }
       } catch (error) {
         console.error("Load books error", error);
-        alert("Failed to load books");
       }
     };
     fetchBooks();
   }, []);
+
+  useEffect(() => {
+    const verifyPermission = async () => {
+      const hasPermission = await checkPermissions('create');
+      setHasCreatePermission(hasPermission);
+    };
+    verifyPermission();
+  }, [navigate]);
 
   return (
     <>
@@ -132,6 +141,54 @@ const BookList = () => {
         <div className="left-and-right">
         <div className="book-scroll-wrapper book-scroll-wrapper-left">
         <div className="book-scroll"> 
+        <div className="mb-3">
+          <div className="row g-2 align-items-end mb-3 flex-wrap">
+            <div className="col-md-4 col-sm-6">
+              <label className="form-label">Filter By Author:</label>
+              <select
+                className="form-select"
+                value={selectedAuthor}
+                onChange={(e) => setSelectedAuthor(e.target.value)}
+              >
+                <option value='All'>All</option>
+                {authors.map((author) => (
+                  <option key={author} value={author}>{author}</option>
+                ))}
+              </select>
+            </div>
+            <div className="col-md-4 col-sm-6">
+              <label className="form-label">Filter By Genre:</label>
+              <select
+                className="form-select"
+                value={selectedGenre}
+                onChange={(e) => setSelectedGenre(e.target.value)}
+              >
+                <option value='All'>All</option>
+                {genres.map((genre) => (
+                  <option key={genre} value={genre}>{genre}</option>
+                ))}
+              </select>
+            </div>
+            <div className="col-md-4 d-flex gap-2">
+                <button
+                className="btn btn-outline-secondary"
+                onClick={() => {
+                  setSelectedAuthor('All');
+                  setSelectedGenre('All');
+                }}
+              >Clear Filters</button>
+              {hasCreatePermission && (
+                <Link 
+                  to={"/create-book"}
+                  className="btn btn-primary"
+                >
+                  Add New Book
+                </Link>
+              )}
+            </div>
+          </div>
+        </div>
+        <div className="book-scroll">
           {books
           .filter(book => 
             (selectedAuthor === 'All' || book.author === selectedAuthor) &&

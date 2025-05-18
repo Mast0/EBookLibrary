@@ -20,7 +20,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   });
 
   useEffect(() => {
-    document.body.className = theme; // додаємо клас до body
+    document.body.className = theme;
     localStorage.setItem("theme", theme);
   }, [theme]);
 

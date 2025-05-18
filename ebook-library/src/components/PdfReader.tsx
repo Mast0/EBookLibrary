@@ -24,6 +24,7 @@ const PdfReader = () => {
     const { id } = useParams<{ id: string }>();
     const [numPages, setNumPages] = useState<number | null>(null);
     const [pageNumber, setPageNumber] = useState(1);
+    const [maxPage, setMaxPage] = useState(1);
     const [file, setFile] = useState<string | null>(null);
     const [retryCount, setRetryCount] = useState(0);
     const [error, setError] = useState<string | null>(null);
@@ -76,9 +77,11 @@ const PdfReader = () => {
           setUserId(user.id);
 
           const reading: Reading = await getReading(user.id, id);
+          setMaxPage(reading.current_page || 1);
           setPageNumber(reading.current_page || 1);
         } catch(error){
           console.log("No previous reading progress or error:", error);
+          setMaxPage(1);
           setPageNumber(1);
         } finally {
           setIsready(true);
@@ -95,23 +98,23 @@ const PdfReader = () => {
 
       const saveProgress = async () => {
         try{
-          await updateReading(userId, id, pageNumber);
+          await updateReading(userId, id, maxPage);
         } catch (err) {
           try{
-            await createReading(userId, id, pageNumber);
+            await createReading(userId, id, maxPage);
           } catch (e) {
             console.error("Failed to save reading progress:", e);
           }
         };
       }
         saveProgress();
-    }, [pageNumber, id, userId, isReady]);
+    }, [maxPage, id, userId, isReady]);
 
     useEffect(() => {
         const verifyPermission = async () => {
-          const hasPermission = await checkPermissions('create');
+          const hasPermission = await checkPermissions('read');
           if (!hasPermission)
-            navigate('/not-found', { replace: true });
+            navigate('/login', { replace: true });
         };
         verifyPermission();
       }, [navigate]);
@@ -122,17 +125,19 @@ const PdfReader = () => {
           setPageNumber((prev) => Math.max(prev - 1, 1));
         } else if (e.key === 'ArrowRight') {
           setPageNumber((prev) => (numPages && prev < numPages ? prev + 1 : prev));
+          setMaxPage((prev) => (numPages && prev < numPages && prev >= pageNumber? prev + 1 : prev));
         }
       };
 
       window.addEventListener('keydown', handleKeyDown);
       return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [numPages]);
+    });
 
     const onDocumentLoadSuccess = ({numPages}: {numPages: number}) => {
         setNumPages(numPages);
         if (pageNumber > numPages) {
           setPageNumber(1);
+          setMaxPage(1);
         }
     };
 
@@ -146,48 +151,51 @@ const PdfReader = () => {
         }
       };
 
-      const handlePageClick = (e: React.MouseEvent<HTMLDivElement>) => {
-        const bounds = e.currentTarget.getBoundingClientRect();
-        const clickX = e.clientX;
-      
-        if (clickX < bounds.left + bounds.width / 2) {
-          setPageNumber((prev) => Math.max(prev - 1, 1));
-        } else {
-          setPageNumber((prev) => (numPages && prev < numPages ? prev + 1 : prev));
-        }
-      };
-      
+    const handlePageClick = (e: React.MouseEvent<HTMLDivElement>) => {
+      const bounds = e.currentTarget.getBoundingClientRect();
+      const clickX = e.clientX;
+    
+      if (clickX < bounds.left + bounds.width / 2) {
+        setPageNumber((prev) => Math.max(prev - 1, 1));
+      } else {
+        setPageNumber((prev) => (numPages && prev < numPages ? prev + 1 : prev));
+        setMaxPage((prev) => (numPages && prev < numPages && prev >= pageNumber? prev + 1 : prev));
+      }
+    };
+    
 
-      return (
-        <div className="pdf-reader">
-          {file ? (
-            <>
-              <div className="page-clickable-area" onClick={handlePageClick}>
-                <Document
-                  key={file}
-                  file={file}
-                  options={options}
-                  onLoadSuccess={onDocumentLoadSuccess}
-                  onLoadError={onDocumentLoadError}
-                >
-                  {numPages && (
-                    <Page pageNumber={pageNumber} />
-                  )}
-                </Document>
-              </div>
-      
-              <div className="controls">
-                <button onClick={() => setPageNumber(p => Math.max(p - 1, 1))} disabled={pageNumber <= 1}>←</button>
-                <span>Page {pageNumber} of {numPages}</span>
-                <button onClick={() => setPageNumber(p => (numPages && p < numPages ? p + 1 : p))} disabled={pageNumber === numPages}>→</button>
-              </div>
-            </>
-          ) : (
-            <p>Loading PDF...</p>
-          )}
-        </div>
-      );
-      
+    return (
+      <div className="pdf-reader">
+        {file ? (
+          <>
+            <div className="page-clickable-area" onClick={handlePageClick}>
+              <Document
+                key={file}
+                file={file}
+                options={options}
+                onLoadSuccess={onDocumentLoadSuccess}
+                onLoadError={onDocumentLoadError}
+              >
+                {numPages && (
+                  <Page pageNumber={pageNumber} />
+                )}
+              </Document>
+            </div>
+    
+            <div className="controls">
+              <button onClick={() => setPageNumber(p => Math.max(p - 1, 1))} disabled={pageNumber <= 1}>←</button>
+              <span>Page {pageNumber} of {numPages}</span>
+              <button onClick={() => {
+                setPageNumber(p => (numPages && p < numPages ? p + 1 : p))
+                setMaxPage((prev) => (numPages && prev < numPages && prev >= pageNumber? prev + 1 : prev));
+              }} disabled={pageNumber === numPages}>→</button>
+            </div>
+          </>
+        ) : (
+          <p>Loading PDF...</p>
+        )}
+      </div>
+    );    
 };
 
 export default PdfReader;

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { createBook, getRole } from "../services/api";
+import { createBook } from "../services/api";
 import "../styles/FormPage.css";
 import { checkPermissions } from "../services/check";
 
@@ -10,6 +10,7 @@ const CreateBook = () => {
   const [genre, setGenre] = useState("");
   const [description, setDescription] = useState("");
   const [publication_year, setYear] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [file, setFile] = useState<File | null>(null);
 
   const navigate = useNavigate();
@@ -43,9 +44,11 @@ const CreateBook = () => {
 
       await createBook(formData);
       navigate("/");
-    } catch (error) {
+    } catch (error: any) {
       console.error("Create book error", error);
-      alert("Failed to create book");
+      if (error.response.data.message != null)
+        setErrorMessage(error.response.data.message);
+      else setErrorMessage("Failed to create book.")
     }
   };
 
@@ -104,6 +107,7 @@ const CreateBook = () => {
             onChange={handleFileChange}
             required
           />
+          {errorMessage && <div className="error-message">{errorMessage}</div>}
           <button type="submit">Create Book</button>
         </form>
       </div>

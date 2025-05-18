@@ -60,7 +60,7 @@ export class UserService {
     const user = await this.findUserByEmail(email);
 
     if (!user)
-      throw new RpcException(new UnauthorizedException('Invalid email'))
+      throw new RpcException(new UnauthorizedException('Invalid email or password'))
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid)

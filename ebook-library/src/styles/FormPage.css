@@ -2,7 +2,7 @@
     max-width: 400px;
     margin: 3rem auto;
     padding: 2rem;
-    background-color: #f8f9fa;
+    background-color: #faf9f8;
     border-radius: 12px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
 }
@@ -72,7 +72,7 @@ body.dark {
 }
 
 body.light {
-    background-color: #fffffff6;
+    background-color: #F4F4F4;
     color: #000000;
 }
 
@@ -85,6 +85,19 @@ body.light {
 body.light .form-container {
     --bg-color: #f8f9fa;
     --text-color: #000
+}
+
+body.light input,
+body.light select {
+    background-color: #F4F4F4;
+    color: #333;
+    border: 1px solid #555;
+}
+
+body.light input:focus,
+body.light select:focus {
+    border-color: #D5E8EF;
+    box-shadow: 0 0 5px rgba(99, 134, 185, 0.4);
 }
 
 /* dark theme */

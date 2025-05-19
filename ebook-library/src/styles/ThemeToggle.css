@@ -9,7 +9,6 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: #cdcee4;
 }
 
 .theme-toggle-btn svg {
@@ -24,8 +23,12 @@
 
 body.dark .theme-toggle-btn {
     background: transparent;
+    color: #cdcee4;
 }
 
 body.dark .theme-toggle-btn:hover {
     background: transparent;
+}
+body.light .theme-toggle-btn {
+  color: #272727;
 }

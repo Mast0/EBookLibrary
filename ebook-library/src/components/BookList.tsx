@@ -86,7 +86,7 @@ const BookList = () => {
         <div className="book-scroll">
           {readingBooks.map(({book, reading}, index) => (
             <div key={`reading-${index}`} className="card book-card">
-              <div className="book-image-placeholder bg-secondary">
+              <div className="book-image-placeholder">
                 <i className="bi bi-book"></i>
               </div>
               <div className="card-body d-flex flex-column">
@@ -148,7 +148,7 @@ const BookList = () => {
               )
               .map((book, index) => (
                 <div key={index} className="card book-card">
-                  <div className="book-image-placeholder bg-secondary">
+                  <div className="book-image-placeholder ">
                     <i className="bi bi-book"></i>
                   </div>
                   <div className="card-body d-flex flex-column">

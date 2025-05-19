@@ -42,19 +42,15 @@
     flex-shrink: 0;     
     width: 330px;
     padding: 2rem;
-    background-color: #28293d;
     border-radius: 12px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     display: flex;
-  flex-direction: column;
+    flex-direction: column;
 }
   
 .add-button {
     text-decoration: none;
     padding: 12px;
-    color: white;
     border-radius: 8px;
-    border: 1px solid #cdcee480;
     font-size: 16px;
     cursor: pointer;
     width: 330px;       
@@ -71,12 +67,10 @@
 
 .book-image-placeholder {
     height: 280px;
-    background: #ddd;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 3rem;
-    color: #fff;
     border-radius: 4px 4px 0 0;
 }
 
@@ -89,7 +83,6 @@
 .book-author {
     font-size: 0.9rem;
     font-weight: 300;
-    color: #555;
     margin-bottom: 0.5rem;
 }
 
@@ -125,7 +118,7 @@ body.dark .book-card {
 }
 
 body.dark .book-image-placeholder {
-    background: #333;
+    background: #575762e6;
     color: #ccc;
 }
 
@@ -138,6 +131,50 @@ body.dark .progress-bar {
     color: #000;
 }
 
+body.dark .form-container-right {
+    background-color: #28293d;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+body.dark .add-button {
+    color: white;
+    border: 1px solid #cdcee480;
+}
+
 .book-scroll-wrapper-left {
     flex: 1;
   }
+
+
+
+body.light .book-card {
+    background-color: #e7eaefa1;
+    color: #1a1a1a;
+    box-shadow: 0 2px 5px #b3bdd2f0;
+}
+
+body.light .book-image-placeholder {
+    background: #90959d73;
+    color: #ccc;
+}
+
+body.light .book-author {
+    color: #333;
+}
+
+body.light .form-container-right {
+    background-color: #b3bdd27d;
+    color: #1a1a1a;
+    box-shadow: 0 2px 5px #b3bdd2f0;
+}
+
+body.light .add-button {
+    background-color: #b3bdd2a1;
+    color: #1a1a1a;
+    box-shadow: 0 2px 5px #b3bdd2f0;
+}
+
+body.light .progress-bar {
+    background-color: #34c759;
+    color: #000;
+}
